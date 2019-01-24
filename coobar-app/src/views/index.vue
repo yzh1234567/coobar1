@@ -113,16 +113,19 @@
                    </el-carousel>
               </div>
           </div>
-    </div>
+      </div>
+      <index-footer></index-footer>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import lbtu from "@/swiper/lunbotu.vue"
+import indexFooter from "@/components/footer/indexFooter"
 export default {
       components:{
           "swipe-box":lbtu,
+          "index-footer":indexFooter,
       },
        data(){
         return {
