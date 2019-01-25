@@ -7,15 +7,15 @@ import loginErr from "./views/loginErr.vue"
 import grass from "./components/header/grass"
 import lunbotu from "./swiper/lunbotu.vue"
 import indexHeader from "./components/header/indexHeader"
-// import products  from "./components/product/products"
+import products  from "./components/product/products"
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {path: '/',component: Home,children:[
       {path:"",component:index},
-      // {path:"/products/",component:products},
-      // {path:"/products/:kwords",component:products}
+      {path:"/products/",component:products},
+      {path:"/products/:kwords",component:products}
     ]},
     {path:"/login",component:login},
     {path:"/loginerr",component:loginErr},

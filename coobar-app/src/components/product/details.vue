@@ -388,7 +388,15 @@
 </template>
 <script>
 export default {
-    
+      data(){
+
+      },
+      created(){
+
+      },
+      method:{
+          
+      }
 }
 </script>
 <style >

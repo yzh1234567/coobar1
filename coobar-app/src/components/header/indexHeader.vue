@@ -226,6 +226,7 @@
     display: flex;
     width:1200px;
     margin:60px auto 0 auto;
+    text-align:center;
 }
 /* .search-item1的样式 */
 .search-item1{
