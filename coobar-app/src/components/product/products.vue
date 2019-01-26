@@ -464,7 +464,29 @@
 </template>
 <script>
 export default {
-    
+     data(){
+         return{
+             products:[],
+             pageSize:20,
+             pageIndex:0,
+         }
+     },
+     created(){
+         this.getProducts();
+     },
+     method:{
+        //  获取产品
+        getProducts(){
+               this.pageIndex=this.pageIndex+1;
+               var pno=this.pageIndex;
+               var pageSize=this.pageSize;
+               this.axios.get("http://localhost:3000/products",{
+                   params:{pno,pageSize}
+               }).then((res)=>{
+                   this.products=res.data.data;
+               })
+        }
+     }
 }
 </script>
 <style scoped>
