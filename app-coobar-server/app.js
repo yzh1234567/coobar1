@@ -21,7 +21,7 @@ app.use(session({
     }
 }));
 app.use(cors({
-     origin:["http://localhost:8080"],
+     origin:["http://localhost:8080","http://localhost:4200"],
      credentials:true,
 }));
 // 将路由挂载在路由器上
