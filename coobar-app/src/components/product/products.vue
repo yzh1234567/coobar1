@@ -64,17 +64,17 @@
             </div>
             <!-- 产品列表主体-->
             <div class="products_main">	
-				    <div  class="products_main_left" v-show="hidden">
-				       <h3 @click="shrink" class="pm-item pm-item1"><收起侧栏</h3>
-							 <h3 class="pm-item pm-item2">优品推荐</h3>
+				    <div  class="products_main_shrink" v-show="hidden">
+				       <p @click="shrink" class="pm-item pm-item1"><收起侧栏</p>
+							 <p class="pm-item pm-item2">精品蔬菜热销榜</p>
 							 <ul>
 							      <li></li>
 							 </ul>
 				    </div>
-						<div class="products_middle">
+						<div class="products_middle" :class="pmStyle">
 								<div  @click="spread" v-show="noHidden">展开侧栏></div>
-								<div class="products_limitCondition">
-										<div class="limitCondition_item limitCondition_item1" :class="topStyle">
+								<div class="products_limitCondition" :class="topStyle">
+										<div class="limitCondition_item limitCondition_item1" >
 												<ul>
 														<li class="active">综合</li>
 														<li>销量</li>
@@ -114,346 +114,23 @@
 								</div>
 								<div class="product_lists">
 										 <ul class="product_list">
-												 <!-- <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
+												 <li v-for="product of products">
+                                                         <router-link :to="`${product.href}${product.id}`">
+																 <img :src="`http://localhost:3000/${product.img_src}`" alt=""/>
+														 </router-link>
+														 <p class="price">￥{{product.new_price}}</p>
+														 <p class="details">{{product.title}}</p>
 														 <div class="buyCount">
 																 <span>购买数量:</span>
 																 <button>-</button>
-																 <input type="text" value="1" readonly/>
+																 <input type="text" :value="product.count" readonly/>
 																 <button>+</button>
 														 </div>
 														 <div class="buy">
 																 <a href="javascript:;">立即购买</a>
 																 <a href="javascript:;">加入购物车</a>
 														 </div>
-												 </li> -->
-												 <!-- <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li>
-												 <li>
-														 <a href="#">
-																 <img src="../img/F1_product/南瓜1.jpg" alt=""/>
-														 </a>
-														 <p class="price">￥29.9</p>
-														 <p class="details">新疆板栗南瓜单个装重1-2kg</p>
-														 <div class="buyCount">
-																 <span>购买数量:</span>
-																 <button>-</button>
-																 <input type="text" value="1" readonly/>
-																 <button>+</button>
-														 </div>
-														 <div class="buy">
-																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
-														 </div>
-												 </li> -->
+												 </li>	
 										 </ul>
 										 <ul class="page_list">
 												 <li>上一页</li>
@@ -475,16 +152,21 @@
 export default {
      data(){
          return{
+             kwords:"",
              products:[],
-             pageSize:20,
-             pageIndex:0,
+             pageSize:20,  //页大小
+             pageIndex:0,  //页码
+             pageCount:1,  //页数 默认为1
              noHidden:true,
              hidden:false,
              topStyle:"l-item1",
+             pmStyle:"",
          }
      },
      created(){
-        //  this.getProducts();
+        //  获取搜索框传入要搜索的关键字
+        this.kwords=this.$route.params.kwords;
+        this.getProducts();
      },
      methods:{
         //  获取产品
@@ -492,9 +174,11 @@ export default {
                this.pageIndex=this.pageIndex+1;
                var pno=this.pageIndex;
                var pageSize=this.pageSize;
+               var kwords=this.kwords;
                this.axios.get("http://localhost:3000/products",{
-                   params:{pno,pageSize}
+                   params:{pno,pageSize,kwords}
                }).then((res)=>{
+                   this.pageCount=res.data.pageCount;
                    this.products=res.data.data;
                })
         },
@@ -503,12 +187,14 @@ export default {
             this.noHidden=false;
             this.hidden=true;
             this.topStyle="l-item2";
+            this.pmStyle="pm-style";
         },
         // 收起侧栏
         shrink(){
             this.noHidden=true;
             this.hidden=false;
             this.topStyle="l-item1";
+            this.pmStyle="";
         },
      }
 }
@@ -562,21 +248,26 @@ export default {
 .products_main{
     display:flex;
 }
-.products_main_left{
+.products_main_shrink{
     width:220px;
     border:1px solid;
-    box-sizing:border-box;
+    box-sizing:content-box;
+    margin-top: 10px;
 }
-.products_main_left>.pm-item{
+.products_main_shrink>.pm-item{
     width:100%;
 }
-.products_main_left>.pm-item1{
+.products_main_shrink>.pm-item1{
     text-align:right;
 }
 div.products_middle{
     display:flex;
     flex-flow: wrap;
     margin-top: 10px;
+}
+div.pm-style{
+    width:960px;
+    margin-left:20px;
 }
 div.products_middle>div:first-child{
     width:120px;
@@ -590,12 +281,12 @@ div.products_middle div.limitCondition_item{
     justify-content:space-between;
     background:#ccc;
     height:45px;
-    margin-left: 20px;
     padding:10px;
     box-sizing:border-box;
 }
 div.products_middle div.l-item1{
-    width:1060px
+    width:1060px;
+    margin-left:20px;
 }
 div.products_middle div.l-item2{
     width:960px;
@@ -628,17 +319,30 @@ div.limitCondition_item1>ul:nth-child(2){
 }
 div.limitCondition_item1>ul:nth-child(2)>li{
     margin-left: 6px;
+    line-height:30px;
 }
 div.limitCondition_item1>ul:nth-child(2)>li>input{
     width:100px;
     height:30px;
     box-sizing:border-box;
+    padding-left:5px;
 }
+div.limitCondition_item1>ul:nth-child(2)>li>button{
+    width:50px;
+    height:30px;
+    box-sizing:border-box;
+    line-height:30px;
+}
+div.limitCondition_item1>div>span{
+    user-select:none;
+}                                                                     
 div.limitCondition_item1>div>span:nth-child(5),div.limitCondition_item1>div>span:nth-child(6){
     display: inline-block;
     width:40px;
     text-align: center;
     border:1px solid #aaa;
+    height:30px;
+    line-height:30px;
 }
 div.limitCondition_item2>div:first-child>input{
     margin:0 8px;
@@ -649,6 +353,16 @@ div.limitCondition_item2>div:last-child>a{
     text-align: center;
     background: #00c65d;
     color:#fff;
+    height:30px;
+    line-height:30px;
+    box-sizing:border-box;
+}
+div.limitCondition_item2>div:last-child>input{
+       width:100px;
+       height:30px;
+       line-height:30px;
+       box-sizing:border-box;
+       outline:none;
 }
 /*商品列表*/
 .product_lists>ul.product_list{

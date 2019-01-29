@@ -3,7 +3,7 @@ const express=require("express");
 const bodyParser=require("body-parser");
 const cors=require("cors");
 const session=require("express-session");
-const userRouter=require("./routers/product.js");
+const productRouter=require("./routers/product.js");
 // 创建服务器
 var app=express();
     app.listen(3000);
@@ -25,4 +25,4 @@ app.use(cors({
      credentials:true,
 }));
 // 将路由挂载在路由器上
-app.use("/",userRouter);
+app.use("/",productRouter);
