@@ -134,12 +134,12 @@ router.get("/getIndexF3",(req,res)=>{
             // sql语句查询
           if(kword==undefined){
                   //查询总页码  
-              var sql="select count(id) from coobar_products";
+              var sql="select count(id) as c from coobar_products";
               pool.query(sql,(err,result)=>{
                   if(err) throw err;
                   if(result.length>0){
                       //  设置变量总页数
-                      var pageCount=Math.ceil(result[0].count/pageSize);
+                      var pageCount=Math.ceil(result[0].c/pageSize);
                       progress+=50;
                       obj.pageCount=pageCount;
                       if(progress>=100){
@@ -166,7 +166,7 @@ router.get("/getIndexF3",(req,res)=>{
                    var arr=kword.map(function(){ return " details like ? ";});
                    var str=arr.join(" and ");
                    //查询总页码  
-                   var sql="select count(id) from coobar_products where "+str;
+                   var sql="select count(id) as c from coobar_products where "+str;
                    kword.forEach(function(value,i,arr){
                        kword[i]=`%${value}%`;
                    })
@@ -174,7 +174,7 @@ router.get("/getIndexF3",(req,res)=>{
                        if(err) throw err;
                        if(result.length>0){
                            //  设置变量总页数
-                           var pageCount=Math.ceil(result[0].count/pageSize);
+                           var pageCount=Math.ceil(result[0].c/pageSize);
                            progress+=50;
                            obj.pageCount=pageCount;
                            if(progress>=100){
@@ -190,7 +190,7 @@ router.get("/getIndexF3",(req,res)=>{
                       var sql1="select id,title,old_price,new_price,count,img_src,href from coobar_products where " +str + " limit ?,? ";
                          pool.query(sql1,kword,(err,result)=>{
                              if(err) throw err;
-                             if(result.lengh>0){
+                             if(result.length>0){
                                  progress+=50;
                                  obj.data=result;
                                  if(progress>=100){

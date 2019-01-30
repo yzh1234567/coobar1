@@ -118,7 +118,10 @@
                                                          <router-link :to="`${product.href}${product.id}`">
 																 <img :src="`http://localhost:3000/${product.img_src}`" alt=""/>
 														 </router-link>
-														 <p class="price">￥{{product.new_price}}</p>
+														 <p class="price">
+                                                             <span>折扣价:￥{{product.new_price}}</span>
+                                                             <span>专柜价:￥{{product.old_price}}</span>
+                                                         </p>
 														 <p class="details">{{product.title}}</p>
 														 <div class="buyCount">
 																 <span>购买数量:</span>
@@ -132,16 +135,18 @@
 														 </div>
 												 </li>	
 										 </ul>
-										 <ul class="page_list">
-												 <li>上一页</li>
-												 <li>1</li>
-												 <li>2</li>
-												 <li>3</li>
-												 <li>4</li>
-												 <li>5</li>
-												 <li>6</li>
-												 <li>下一页</li>
-										 </ul>
+                                         <div class="page_list">
+                                             <button class="list1 list" type="button">上一页</button>
+                                             <button v-for="item of pageCount" class="list2 list" type="button" 
+                                             :class="{active:item-1==pageIndex}">{{item}}</button>
+                                             <button class="list3 list" type="button">下一页</button>
+                                         </div>
+                                         <!-- <el-pagination
+                                            background
+                                            layout="prev, pager, next"
+                                            :page-size="pageSizing"
+                                            :page-count="pageCount">
+                                        </el-pagination> -->
 								</div>
 						</div>     
 				</div>
@@ -171,12 +176,9 @@ export default {
      methods:{
         //  获取产品
         getProducts(){
-               this.pageIndex=this.pageIndex+1;
-               var pno=this.pageIndex;
-               var pageSize=this.pageSize;
                var kwords=this.kwords;
                this.axios.get("http://localhost:3000/products",{
-                   params:{pno,pageSize,kwords}
+                   params:{kwords}
                }).then((res)=>{
                    this.pageCount=res.data.pageCount;
                    this.products=res.data.data;
@@ -196,7 +198,16 @@ export default {
             this.topStyle="l-item1";
             this.pmStyle="";
         },
-     }
+     },
+     watch:{
+           "$route":{
+               handler(to){
+                   this.kwords=to.params.kwords;
+                   this.getProducts();
+               },
+               immediate:true,
+           }
+       },
 }
 </script>
 <style scoped>
@@ -372,13 +383,36 @@ div.limitCondition_item2>div:last-child>input{
 .product_lists>ul.product_list>li{
     width: 240px;
     padding: 10px;
-    border:2px solid #fff;
+    border:2px solid #f5f5f5;
+    box-sizing:border-box;
 }
 .product_lists>ul.product_list>li:hover{
     border:2px solid #00c65d;
 }
 .product_lists>ul.product_list>li>a>img{
     width:220px;
+}
+.product_lists>ul.product_list>li>p.price{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.product_lists>ul.product_list>li>p.price>span:first-child{
+    color:#f70738;
+}
+.product_lists>ul.product_list>li>p.price>span:last-child{
+    font-size:12px;
+    color:#999;
+    /* text-decoration:line-through; */
+    text-decoration: line-through;
+}
+.product_lists>ul.product_list>li>p.details{
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+}
+.product_lists>ul.product_list>li>div.buyCount ,.product_lists>ul.product_list>li>p{
+    padding:5px 0;
 }
 .product_lists>ul.product_list>li>div.buyCount>button{
     width:30px;
@@ -388,12 +422,14 @@ div.limitCondition_item2>div:last-child>input{
     width:60px;
     height:30px;
     text-align: center;
+    box-sizing:border-box;
 }
 .product_lists>ul.product_list>li>div.buy{
     margin: 10px 0;
+    display:flex;
+    justify-content:space-between;
 }
 .product_lists>ul.product_list>li>div.buy>a{
-    display: inline-block;
     width:100px;
     height:40px;
     text-align: center;
@@ -404,15 +440,23 @@ div.limitCondition_item2>div:last-child>input{
 .product_lists>.page_list{
     display: flex;
     justify-content: flex-end;
+    margin:10px 0;
 }
-.product_lists>.page_list>li{
+.product_lists>.page_list>.list{
     width:40px;
     height:40px;
     border:1px solid #ddd;
     text-align: center;
     line-height: 40px;
+    margin-left:5px;
 }
-.product_lists>.page_list>li:first-child,.product_lists>.page_list>li:last-child{
+.product_lists>.page_list>.list:focus{
+    outline:1px solid #00c65d;
+}
+.product_lists>.page_list>.active{
+    background:#00c65d;
+}
+.product_lists>.page_list>.list1,.product_lists>.page_list>.list3{
     width:80px;
 }
 </style>
