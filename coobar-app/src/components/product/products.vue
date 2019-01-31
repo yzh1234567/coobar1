@@ -67,8 +67,10 @@
 				    <div  class="products_main_shrink" v-show="hidden">
 				       <p @click="shrink" class="pm-item pm-item1"><收起侧栏</p>
 							 <p class="pm-item pm-item2">精品蔬菜热销榜</p>
-							 <ul>
-							      <li></li>
+							 <ul v-show="orderProducts.length>0">
+							      <li v-for="(item,value) of orderProducts" :key="value">
+
+                                  </li>
 							 </ul>
 				    </div>
 						<div class="products_middle" :class="pmStyle">
@@ -114,7 +116,7 @@
 								</div>
 								<div class="product_lists">
 										 <ul class="product_list">
-												 <li v-for="product of products">
+												 <li v-for="(product,value) of products"  :key="value">
                                                          <router-link :to="`${product.href}${product.id}`">
 																 <img :src="`http://localhost:3000/${product.img_src}`" alt=""/>
 														 </router-link>
@@ -125,9 +127,9 @@
 														 <p class="details">{{product.title}}</p>
 														 <div class="buyCount">
 																 <span>购买数量:</span>
-																 <button>-</button>
+																 <button @click="getAdd" data-count="-1" :data-index="value">-</button>
 																 <input type="text" :value="product.count" readonly/>
-																 <button>+</button>
+																 <button @click="getAdd" data-count="1" :data-index="value">+</button>
 														 </div>
 														 <div class="buy">
 																 <a href="javascript:;">立即购买</a>
@@ -136,10 +138,10 @@
 												 </li>	
 										 </ul>
                                          <div class="page_list">
-                                             <button class="list1 list" type="button">上一页</button>
-                                             <button v-for="item of pageCount" class="list2 list" type="button" 
-                                             :class="{active:item-1==pageIndex}">{{item}}</button>
-                                             <button class="list3 list" type="button">下一页</button>
+                                             <button class="list1 list" type="button" @click="getPrev" :disabled="1==pageIndex">上一页</button>
+                                             <button v-for="(item,value) of pageCount" class="list2 list" type="button" 
+                                             :class="{active:item==pageIndex}" :key="value" @click="getPage" :data-page="item">{{item}}</button>
+                                             <button class="list3 list" type="button" @click="getNext" :disabled="pageCount==pageIndex">下一页</button>
                                          </div>
                                          <!-- <el-pagination
                                             background
@@ -157,10 +159,11 @@
 export default {
      data(){
          return{
+             orderProducts:[],
              kwords:"",
              products:[],
              pageSize:20,  //页大小
-             pageIndex:0,  //页码
+             pageIndex:1,  //页码
              pageCount:1,  //页数 默认为1
              noHidden:true,
              hidden:false,
@@ -174,11 +177,44 @@ export default {
         this.getProducts();
      },
      methods:{
+        //  上一页
+        getPrev(){
+            if(this.pageIndex>1){
+                this.pageIndex+=-1;
+                this.getProducts();
+            }
+        },
+        //  下一页
+        getNext(){
+            if(this.pageIndex<this.pageCount){
+                this.pageIndex+=1;
+                this.getProducts();
+            }
+        },
+        //  跳转页码
+        getPage(e){
+              this.pageIndex=parseInt(e.target.dataset.page);
+              this.getProducts();
+        },
+        //  添加商品数量事件
+            getAdd(e){
+                var index=parseInt(e.target.dataset.index);
+                var count=parseInt(e.target.dataset.count);
+                this.products[index].count+=count;
+                if(this.products[index].count<1){
+                    this.products[index].count=1
+                };
+                if(this.products[index].count>99){
+                    this.products[index].count=99
+                }
+            },
         //  获取产品
         getProducts(){
+              var pno=this.pageIndex;
+              var pageSize=this.pageSize;
                var kwords=this.kwords;
                this.axios.get("http://localhost:3000/products",{
-                   params:{kwords}
+                   params:{kwords,pno,pageSize}
                }).then((res)=>{
                    this.pageCount=res.data.pageCount;
                    this.products=res.data.data;
@@ -255,208 +291,211 @@ export default {
             border:1px solid #ddd;
             line-height: 30px;
         }
-/*产品列表主体样式*/
-.products_main{
-    display:flex;
-}
-.products_main_shrink{
-    width:220px;
-    border:1px solid;
-    box-sizing:content-box;
-    margin-top: 10px;
-}
-.products_main_shrink>.pm-item{
-    width:100%;
-}
-.products_main_shrink>.pm-item1{
-    text-align:right;
-}
-div.products_middle{
-    display:flex;
-    flex-flow: wrap;
-    margin-top: 10px;
-}
-div.pm-style{
-    width:960px;
-    margin-left:20px;
-}
-div.products_middle>div:first-child{
-    width:120px;
-    height:90px;
-    text-align: center;
-    line-height: 90px;
-    background: #ccc;
-}
-div.products_middle div.limitCondition_item{
-    display:flex;
-    justify-content:space-between;
-    background:#ccc;
-    height:45px;
-    padding:10px;
-    box-sizing:border-box;
-}
-div.products_middle div.l-item1{
-    width:1060px;
-    margin-left:20px;
-}
-div.products_middle div.l-item2{
-    width:960px;
-}
-div.limitCondition_item1>ul{
-    display:flex
-}
-div.limitCondition_item1>ul>li{
-     height:30px;
-}
-div.limitCondition_item1>ul:first-child>li{
-    display: inline-block;
-    width:60px;
-    border:1px solid #bbb;
-    text-align: center;
-    line-height:30px;
-}
-div.limitCondition_item1>ul:first-child>li.active{
-    background:#00c65d;
-    color:#fff;
-}
-div.limitCondition_item1>ul:first-child>li:hover{
-    border:1px solid #00c65d;
-}
-div.limitCondition_item1>ul:first-child>li+li{
-    border-left: 1px solid #ccc;
-}
-div.limitCondition_item1>ul:nth-child(2){
-    margin-left:-5%;
-}
-div.limitCondition_item1>ul:nth-child(2)>li{
-    margin-left: 6px;
-    line-height:30px;
-}
-div.limitCondition_item1>ul:nth-child(2)>li>input{
-    width:100px;
-    height:30px;
-    box-sizing:border-box;
-    padding-left:5px;
-}
-div.limitCondition_item1>ul:nth-child(2)>li>button{
-    width:50px;
-    height:30px;
-    box-sizing:border-box;
-    line-height:30px;
-}
-div.limitCondition_item1>div>span{
-    user-select:none;
-}                                                                     
-div.limitCondition_item1>div>span:nth-child(5),div.limitCondition_item1>div>span:nth-child(6){
-    display: inline-block;
-    width:40px;
-    text-align: center;
-    border:1px solid #aaa;
-    height:30px;
-    line-height:30px;
-}
-div.limitCondition_item2>div:first-child>input{
-    margin:0 8px;
-}
-div.limitCondition_item2>div:last-child>a{
-    display: inline-block;
-    width:60px;
-    text-align: center;
-    background: #00c65d;
-    color:#fff;
-    height:30px;
-    line-height:30px;
-    box-sizing:border-box;
-}
-div.limitCondition_item2>div:last-child>input{
-       width:100px;
-       height:30px;
-       line-height:30px;
-       box-sizing:border-box;
-       outline:none;
-}
-/*商品列表*/
-.product_lists>ul.product_list{
-    display:flex;
-    flex-flow: wrap;
-}
-.product_lists>ul.product_list>li{
-    width: 240px;
-    padding: 10px;
-    border:2px solid #f5f5f5;
-    box-sizing:border-box;
-}
-.product_lists>ul.product_list>li:hover{
-    border:2px solid #00c65d;
-}
-.product_lists>ul.product_list>li>a>img{
-    width:220px;
-}
-.product_lists>ul.product_list>li>p.price{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-.product_lists>ul.product_list>li>p.price>span:first-child{
-    color:#f70738;
-}
-.product_lists>ul.product_list>li>p.price>span:last-child{
-    font-size:12px;
-    color:#999;
-    /* text-decoration:line-through; */
-    text-decoration: line-through;
-}
-.product_lists>ul.product_list>li>p.details{
-    text-overflow:ellipsis;
-    overflow:hidden;
-    white-space:nowrap;
-}
-.product_lists>ul.product_list>li>div.buyCount ,.product_lists>ul.product_list>li>p{
-    padding:5px 0;
-}
-.product_lists>ul.product_list>li>div.buyCount>button{
-    width:30px;
-    height:30px;
-}
-.product_lists>ul.product_list>li>div.buyCount>input{
-    width:60px;
-    height:30px;
-    text-align: center;
-    box-sizing:border-box;
-}
-.product_lists>ul.product_list>li>div.buy{
-    margin: 10px 0;
-    display:flex;
-    justify-content:space-between;
-}
-.product_lists>ul.product_list>li>div.buy>a{
-    width:100px;
-    height:40px;
-    text-align: center;
-    line-height: 40px;
-    background: #00c65d;
-}
-/*页码样式*/
-.product_lists>.page_list{
-    display: flex;
-    justify-content: flex-end;
-    margin:10px 0;
-}
-.product_lists>.page_list>.list{
-    width:40px;
-    height:40px;
-    border:1px solid #ddd;
-    text-align: center;
-    line-height: 40px;
-    margin-left:5px;
-}
-.product_lists>.page_list>.list:focus{
-    outline:1px solid #00c65d;
-}
-.product_lists>.page_list>.active{
-    background:#00c65d;
-}
-.product_lists>.page_list>.list1,.product_lists>.page_list>.list3{
-    width:80px;
-}
+        /*产品列表主体样式*/
+        .products_main{
+            display:flex;
+        }
+        .products_main_shrink{
+            width:220px;
+            box-sizing:content-box;
+            margin-top: 10px;
+        }
+        .products_main_shrink>.pm-item{
+            width:100%;
+            padding:10px ;
+            background:#aaa;
+            margin-bottom:5px;
+            box-sizing:border-box;
+        }
+        .products_main_shrink>.pm-item1{
+            text-align:right;
+        }
+        div.products_middle{
+            display:flex;
+            flex-flow: wrap;
+            margin-top: 10px;
+        }
+        div.pm-style{
+            width:960px;
+            margin-left:20px;
+        }
+        div.products_middle>div:first-child{
+            width:120px;
+            height:90px;
+            text-align: center;
+            line-height: 90px;
+            background: #ccc;
+        }
+        div.products_middle div.limitCondition_item{
+            display:flex;
+            justify-content:space-between;
+            background:#ccc;
+            height:45px;
+            padding:10px;
+            box-sizing:border-box;
+        }
+        div.products_middle div.l-item1{
+            width:1060px;
+            margin-left:20px;
+        }
+        div.products_middle div.l-item2{
+            width:960px;
+        }
+        div.limitCondition_item1>ul{
+            display:flex
+        }
+        div.limitCondition_item1>ul>li{
+            height:30px;
+        }
+        div.limitCondition_item1>ul:first-child>li{
+            display: inline-block;
+            width:60px;
+            border:1px solid #bbb;
+            text-align: center;
+            line-height:30px;
+        }
+        div.limitCondition_item1>ul:first-child>li.active{
+            background:#00c65d;
+            color:#fff;
+        }
+        div.limitCondition_item1>ul:first-child>li:hover{
+            border:1px solid #00c65d;
+        }
+        div.limitCondition_item1>ul:first-child>li+li{
+            border-left: 1px solid #ccc;
+        }
+        div.limitCondition_item1>ul:nth-child(2){
+            margin-left:-5%;
+        }
+        div.limitCondition_item1>ul:nth-child(2)>li{
+            margin-left: 6px;
+            line-height:30px;
+        }
+        div.limitCondition_item1>ul:nth-child(2)>li>input{
+            width:100px;
+            height:30px;
+            box-sizing:border-box;
+            padding-left:5px;
+        }
+        div.limitCondition_item1>ul:nth-child(2)>li>button{
+            width:50px;
+            height:30px;
+            box-sizing:border-box;
+            line-height:30px;
+        }
+        div.limitCondition_item1>div>span{
+            user-select:none;
+        }                                                                     
+        div.limitCondition_item1>div>span:nth-child(5),div.limitCondition_item1>div>span:nth-child(6){
+            display: inline-block;
+            width:40px;
+            text-align: center;
+            border:1px solid #aaa;
+            height:30px;
+            line-height:30px;
+        }
+        div.limitCondition_item2>div:first-child>input{
+            margin:0 8px;
+        }
+        div.limitCondition_item2>div:last-child>a{
+            display: inline-block;
+            width:60px;
+            text-align: center;
+            background: #00c65d;
+            color:#fff;
+            height:30px;
+            line-height:30px;
+            box-sizing:border-box;
+        }
+        div.limitCondition_item2>div:last-child>input{
+            width:100px;
+            height:30px;
+            line-height:30px;
+            box-sizing:border-box;
+            outline:none;
+        }
+        /*商品列表*/
+        .product_lists>ul.product_list{
+            display:flex;
+            flex-flow: wrap;
+        }
+        .product_lists>ul.product_list>li{
+            width: 240px;
+            padding: 10px;
+            border:2px solid #f5f5f5;
+            box-sizing:border-box;
+        }
+        .product_lists>ul.product_list>li:hover{
+            border:2px solid #00c65d;
+        }
+        .product_lists>ul.product_list>li>a>img{
+            width:220px;
+        }
+        .product_lists>ul.product_list>li>p.price{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+        .product_lists>ul.product_list>li>p.price>span:first-child{
+            color:#f70738;
+        }
+        .product_lists>ul.product_list>li>p.price>span:last-child{
+            font-size:12px;
+            color:#999;
+            /* text-decoration:line-through; */
+            text-decoration: line-through;
+        }
+        .product_lists>ul.product_list>li>p.details{
+            text-overflow:ellipsis;
+            overflow:hidden;
+            white-space:nowrap;
+        }
+        .product_lists>ul.product_list>li>div.buyCount ,.product_lists>ul.product_list>li>p{
+            padding:5px 0;
+        }
+        .product_lists>ul.product_list>li>div.buyCount>button{
+            width:30px;
+            height:30px;
+        }
+        .product_lists>ul.product_list>li>div.buyCount>input{
+            width:60px;
+            height:30px;
+            text-align: center;
+            box-sizing:border-box;
+        }
+        .product_lists>ul.product_list>li>div.buy{
+            margin: 10px 0;
+            display:flex;
+            justify-content:space-between;
+        }
+        .product_lists>ul.product_list>li>div.buy>a{
+            width:100px;
+            height:40px;
+            text-align: center;
+            line-height: 40px;
+            background: #00c65d;
+        }
+        /*页码样式*/
+        .product_lists>.page_list{
+            display: flex;
+            justify-content: flex-end;
+            margin:10px 0;
+        }
+        .product_lists>.page_list>.list{
+            width:40px;
+            height:40px;
+            border:1px solid #ddd;
+            text-align: center;
+            line-height: 40px;
+            margin-left:5px;
+        }
+        .product_lists>.page_list>.list:focus{
+            outline:1px solid #00c65d;
+        }
+        .product_lists>.page_list>.active{
+            background:#00c65d;
+        }
+        .product_lists>.page_list>.list1,.product_lists>.page_list>.list3{
+            width:80px;
+        }
 </style>
