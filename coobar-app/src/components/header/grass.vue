@@ -2,7 +2,7 @@
     <div class="app-grass">
          <div class="my_animation">
             <div class="field">
-                <div class="grass" v-for="list of lists"  :key="list.id"></div>
+                <div class="grass" v-for="(list,value) of lists"  :key="value"></div>
             </div>
         </div>
     </div>
