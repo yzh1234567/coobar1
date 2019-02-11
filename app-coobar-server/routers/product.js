@@ -28,7 +28,7 @@ var router=express.Router();
         return;
     };
     // sql语句;
-    var sql="select uid from coobar_user where uname=? or phone=? or email=? and upwd=md5(?)";
+    var sql="select uid from coobar_user where uname=? or phone=? and upwd=md5(?)";
     pool.query(sql,[uname,uname,uname,upwd],(err,result)=>{
         if(err) throw err;
         if(result.length>0){
@@ -199,6 +199,59 @@ router.get("/getIndexF3",(req,res)=>{
                              }
                          })
           }
-     }) 
+     }) ;
+//功能7 注册路由
+  router.post("/register",(req,res)=>{
+          var  uname=req.body.uname;
+          var upwd=req.body.upwd;
+          var phone=req.body.phone;
+        //  正则验证
+        var reg=/^[\w\u4e00-\u9fa5]{6,12}$/g;
+        var reg1=/^[\w.!@#$%?]{8,20}$/g;
+        var reg2=/^1[3-9][0-9]{9}$/g;
+        if(uname==undefined){
+            res.send({code:-1,msg:"用户名不能为空"});
+            return;
+        }else if(!reg.test(uname)){
+            res.send({code:-2,msg:"用户名格式不正确"});
+            return;
+        };
+        if(upwd==undefined){
+            res.send({code:-3,msg:"密码不能为空"});
+            return;
+        }else if(!reg1.test(upwd)){
+            res.send({code:-4,msg:"密码格式不正确"});
+            return;
+        };
+        if(phone==undefined){
+            res.send({code:-5,msg:"手机号码不能为空"});
+            return;
+        }else if(!reg2.test(phone)){
+            res.send({code:-6,msg:"手机号码格式不正确"});
+            return;
+        };
+        // sql语句
+         var sql="insert into coobar_user (uid,uname,upwd,phone)values(null,?,md5(?),?)";
+         pool.query(sql,[uname,upwd,phone],(err,result)=>{
+             if(err) throw err;
+             if(result.affectedRows>0){
+                 res.send({code:1,msg:"恭喜"+uname+"注册成功"});
+             }else{
+                 res.send({code:-7,msg:"注册失败"})
+             }
+         })
+  });
+// 功能8 加入购物车
+
+// 功能9 ，查询购物车
+router.get("/queryCart",(req,res)=>{
+    var uid=req.session.uid;
+    if(uid==undefined){
+        res.send({code:-1,msg:"请先登录"});
+        return;
+    };
+    // sql语句
+    var sql="select "
+})
 // 导出路由
 module.exports=router;

@@ -112,7 +112,7 @@
          <div class="search-item3">
                 <div>
                    <img src="http://localhost:3000/img/index-header/shop_car1.png" alt=""/>
-                    <a href="#">我的购物车</a>
+                    <router-link to="/cart">我的购物车</router-link>
                     <input type="text" value="0"/>
                 </div>
             </div>   

@@ -55,7 +55,7 @@
                                   <span class="count_reduce" data-count="-1"  :data-value="value" @click="getCount">-</span>
                                   <input type="text" :value="item.count" class="count" readonly/>
                                   <span class="count_increase" data-count="1" :data-value="value" @click="getCount">+</span>
-                                  <button class="shopping_car" data-toggle="shopping_car">加入购物车</button>
+                                  <button class="shopping_car" data-toggle="shopping_car" :data-value="value" @click="addCart">加入购物车</button>
                               </div>
                           </div>
                     </div>
@@ -78,7 +78,7 @@
                               <span>尝鲜价:￥{{item.new_price}}</span>
                               <span>专柜价:￥{{item.old_price}}</span>
                           </p>
-                          <button class="shopping_car" data-toggle="shopping_car">加入购物车</button>
+                          <button class="shopping_car" data-toggle="shopping_car" :data-value="value" @click="addCart1">加入购物车</button>
                       </div>
                   </div>
               </div>
@@ -142,6 +142,36 @@ export default {
         this.getInfo_F3();
     },
     methods:{
+            //商品加入购物车
+             addCart(e){
+                 var value=parseInt(e.target.dataset.value);
+                 var pid=this. F1_lists[value].pid;
+                 var count=this. F1_lists[value].count;
+                 var price=this. F1_lists[value].new_price;
+                 this.axios.get("http://localhost:3000/addCart",{
+                     params:{pid,count,price}
+                 }).then((res)=>{
+                     if(res.data.code==-1){
+                         this.$router.push("/login")
+                     }
+                 })
+
+             },
+            //商品加入购物车
+             addCart1(e){
+                 var value=parseInt(e.target.dataset.value);
+                 var pid=this. F2_lists[value].pid;
+                 var count=this. F2_lists[value].count;
+                 var price=this. F2_lists[value].new_price;
+                 this.axios.get("http://localhost:3000/addCart",{
+                     params:{pid,count,price}
+                 }).then((res)=>{
+                     if(res.data.code==-1){
+                         this.$router.push("/login")
+                     }
+                 })
+
+             },
             // 获取轮播图照片
             getImg(){
                 this.axios.get("http://localhost:3000/getImg").then(res=>{

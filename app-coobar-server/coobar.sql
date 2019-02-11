@@ -3,12 +3,8 @@ create table coobar_user(
       uid int primary key auto_increment,
       uname varchar(20) unique not null,
       upwd varchar(32)  not null,
-      phone char(20) ,
-      email varchar(20)
+      phone char(20)  
 );
-insert into coobar_user (uid,uname,upwd) values(null,"tom1234",md5("12345678"));
-insert into coobar_user (uid,uname,upwd) values(null,"jerry1234",md5("12345678"));
-insert into coobar_user (uid,uname,upwd) values(null,"rose1234",md5("12345678"));
 
 use coobar;
 create table coobar_adImg(

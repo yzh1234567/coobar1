@@ -7,6 +7,7 @@ import loginErr from "./views/loginErr.vue"
 import indexHeader from "./components/header/indexHeader"
 import products  from "./components/product/products"
 import register from "./views/register.vue"
+import cart from "./views/cart.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -18,6 +19,7 @@ export default new Router({
     ]},
     {path:"/login",component:login},
     {path:"/loginerr",component:loginErr},
-    {path:"/register",component:register}
+    {path:"/register",component:register},
+    {path:"/cart",component:cart}
   ]
 })
