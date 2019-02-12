@@ -22,7 +22,7 @@
                         mode="horizontal" @select="handleSelect" background-color="#e3e4e5"
                         text-color="#222" active-text-color="#f70738">
                             <el-menu-item index="1">
-                                <router-link to="/login">您好,请登陆</router-link>
+                                <a href="javascript:;" @click="jump">{{userMsg}}</a>
                             </el-menu-item>
                             <el-menu-item index="2">
                                 <router-link to="/register">免费注册</router-link>
@@ -131,8 +131,14 @@
                       ,'江西','山东','河南','湖北','湖南','广东'
                       ,'海南','四川','贵州','云南','陕西','甘肃','青海','台湾'
                      ,'内蒙古','广西','西藏','宁夏','新疆','香港','澳门'],
-                
+                userMsg:"您好,请登录"
            }
+       },
+       created(){
+            var uname=sessionStorage.getItem("uname");
+            if(uname){
+                this.userMsg=uname
+            };
        },
        methods: {
             handleSelect(key, keyPath) {
@@ -145,7 +151,13 @@
           province(e){
                  var str=e.target.dataset.idx;
                  this.address=str;
-            } 
+            } ,
+            // 判断是否跳到登陆页面
+            jump(){
+                if(this.userMsg=="您好,请登录"){
+                     this.$router.push("/login");
+                }
+            }
        },
   }
 </script>

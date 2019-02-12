@@ -9,8 +9,8 @@ var router=express.Router();
        var uname=req.body.uname;
        var upwd=req.body.upwd;
     //    验证用户名，密码;
-    var regUname=/^\w{6,12}$/i;
-    var regUpwd=/^\w{8,20}$/i;
+    var regUname=/^\w{6,12}$/g;
+    var regUpwd=/^\w{8,20}$/g;
     if(!uname){
         res.send({code:-1,msg:"用户名不能为空"});
         return;
@@ -23,13 +23,13 @@ var router=express.Router();
         res.send({code:-3,msg:"密码不能为空"});
         return;
     };
-    if(!regUpwd(upwd)){
+    if(!regUpwd.test(upwd)){
         res.send({code:-4,msg:"密码格式不正确"});
         return;
     };
     // sql语句;
     var sql="select uid from coobar_user where uname=? or phone=? and upwd=md5(?)";
-    pool.query(sql,[uname,uname,uname,upwd],(err,result)=>{
+    pool.query(sql,[uname,uname,upwd],(err,result)=>{
         if(err) throw err;
         if(result.length>0){
             req.session.uid=result[0].uid;
@@ -242,7 +242,25 @@ router.get("/getIndexF3",(req,res)=>{
          })
   });
 // 功能8 加入购物车
-
+router.get("/addCart",(req,res)=>{
+    var uid=req.session.uid;
+    var count=req.query.count;
+    var pid=req.query.pid;
+    if(uid==undefined){
+        res.send({code:-1,msg:"请先登录"});
+        return;
+    };
+    // sql语句
+       var sql="insert into coobar_cart (cid,uid,pid,count) values (null,?,?,?)";
+       pool.query(sql,[uid,pid,count],(err,result)=>{
+            if(err) throw err;
+            if(result.affectedRows>0){
+                res.send({code:1,msg:"加入购物车成功"})
+            }else{
+                res.send({code:-2,msg:"加入购物车失败"})
+            }
+       })
+});
 // 功能9 ，查询购物车
 router.get("/queryCart",(req,res)=>{
     var uid=req.session.uid;
@@ -251,7 +269,53 @@ router.get("/queryCart",(req,res)=>{
         return;
     };
     // sql语句
-    var sql="select "
+    var sql="select p.title,p.old_price,p.new_price,p.img_src,c.count,c.cid from coobar_cart c ,coobar_products p where p.id=c.pid and uid=?";
+    pool.query(sql,[uid],(err,result)=>{
+        if(err) throw err;
+        if(result.length>0){
+            res.send({code:1,msg:result})
+        }else{
+            res.send({code:-2,msg:"加入购物车失败"})
+        }
+    })
+});
+// 更新购物车
+router.get("/updateCart",(req,res)=>{
+    var count=req.query.count;
+    var cid=req.query.cid;
+    if(count==undefined){
+        count=1
+    };
+    // sql语句
+    var sql="update coobar_cart set count= ? where cid= ?";
+    pool.query(sql,[count,cid],(err,result)=>{
+         if(err) throw err;
+         if(result.affectedRows>0){
+             res.send({code:1,msg:"购物车更新成功"})
+         }else{
+             res.send({code:-2,msg:"更新失败"})
+         }
+    })
+});
+// 删除购物车里面的一件商品
+router.get("/deleteCart",(req,res)=>{
+    var cid=req.query.cid;
+    var uid=req.session.uid;
+    if(uid==undefined){
+        res.send({code:-1,msg:"请先登陆"});
+        return;
+    }
+    // sql语句
+    var sql="delete from coobar_cart where cid = ?";
+    pool.query(sql,[cid],(err,result)=>{
+        if(err) throw err;
+        if(result.affectedRows>0){
+            res.send({code:1,msg:"删除商品成功"})
+        }else{
+            res.send({code:-2,msg:"删除商品失败"})
+        }
+    });
+// 删除购物车所有商品
 })
 // 导出路由
 module.exports=router;

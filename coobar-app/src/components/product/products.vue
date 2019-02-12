@@ -133,7 +133,7 @@
 														 </div>
 														 <div class="buy">
 																 <a href="javascript:;">立即购买</a>
-																 <a href="javascript:;">加入购物车</a>
+																 <a href="javascript:;" @click="addCart" :data-value="value">加入购物车</a>
 														 </div>
 												 </li>	
 										 </ul>
@@ -177,6 +177,20 @@ export default {
         this.getProducts();
      },
      methods:{
+          //商品加入购物车
+             addCart(e){
+                 var value=parseInt(e.target.dataset.value);
+                 var pid=this. products[value].id;
+                 var count=this. products[value].count;
+                 this.axios.get("http://localhost:3000/addCart",{
+                     params:{pid,count}
+                 }).then((res)=>{
+                     if(res.data.code==-1){
+                         this.$router.push("/login")
+                     }
+                 })
+
+             },
         //  上一页
         getPrev(){
             if(this.pageIndex>1){

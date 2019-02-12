@@ -7,6 +7,13 @@ create table coobar_user(
 );
 
 use coobar;
+create table coobar_cart(
+    cid  int primary key auto_increment,
+    uid  int not null,
+    pid  int not null,
+    count int 
+)
+use coobar;
 create table coobar_adImg(
     id int primary key auto_increment,
     img varchar(128),

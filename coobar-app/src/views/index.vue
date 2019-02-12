@@ -66,7 +66,7 @@
               </div>
               <div class="product_detail">
                   <!-- 水果产品1-->
-                  <div class="F2" v-for="item of F2_lists" :key="item.id">
+                  <div class="F2" v-for="(item,value) of F2_lists" :key="item.id">
                       <div class="F1_product1">
                           <router-link :to="`${item.href}${item.pid}`" class="product">
                               <img :src="`http://localhost:3000/${item.img_src}`" alt=""/>
@@ -147,9 +147,8 @@ export default {
                  var value=parseInt(e.target.dataset.value);
                  var pid=this. F1_lists[value].pid;
                  var count=this. F1_lists[value].count;
-                 var price=this. F1_lists[value].new_price;
                  this.axios.get("http://localhost:3000/addCart",{
-                     params:{pid,count,price}
+                     params:{pid,count}
                  }).then((res)=>{
                      if(res.data.code==-1){
                          this.$router.push("/login")
@@ -162,9 +161,8 @@ export default {
                  var value=parseInt(e.target.dataset.value);
                  var pid=this. F2_lists[value].pid;
                  var count=this. F2_lists[value].count;
-                 var price=this. F2_lists[value].new_price;
                  this.axios.get("http://localhost:3000/addCart",{
-                     params:{pid,count,price}
+                     params:{pid,count}
                  }).then((res)=>{
                      if(res.data.code==-1){
                          this.$router.push("/login")

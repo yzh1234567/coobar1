@@ -10,7 +10,7 @@ import ElementUI from "element-ui"
   //  引入element-ui组件库的css文件
 import "element-ui/lib/theme-chalk/index.css"
 // <!-- 2、修改axios配置信息，使跨域保存在session中 -->
-axios.defaults.withCredential=true;
+axios.defaults.withCredentials=true;
 // <!-- 3、注册组件 -->
 Vue.use(ElementUI,{size:"small",zIndex:3000});
 Vue.prototype.axios=axios;

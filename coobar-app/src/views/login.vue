@@ -18,7 +18,7 @@
                    <tr>
                        <td>
                            <a href="javascript:;">用户名</a>
-                           <input type="text" v-model="uname" placeholder="请输入手机号/邮箱/用户名" class="uname" @focus="unameFocus" @blur="unameBlur">
+                           <input type="text" v-model="uname" placeholder="请输入手机号/用户名" class="uname" @focus="unameFocus" @blur="unameBlur">
                            <span>{{msg1}}</span>
                        </td>
                    </tr>
@@ -108,11 +108,12 @@ export default {
              if(this.isRight1&&this.isRight2){
                  var uname=this.uname;
                  var upwd=this.upwd;
-                 this.axios.post("http:localhost:3000/login","uname="+unme+"$upwd="+upwd).then((res)=>{
+                 this.axios.post("http://localhost:3000/login","uname="+uname+"&upwd="+upwd).then((res)=>{
                       if(res.data.code>0){
-                          open("http://localhost:8080/","_self");
+                          sessionStorage.setItem("uname",uname);
+                          this.$router.push("/");
                       }else if(res.data.code==-5){
-                          open("http://localhost:8080/login","_self");
+                          this.$router.push("/login");
                       }
                  })
              }

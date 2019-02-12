@@ -8,7 +8,7 @@
             <a href="javascript:;">库存紧张</a>
         </p>
         <p class="top_item top_item2">
-            <input type="checkbox" class="item2_son item2_son1">全选
+            <input type="checkbox" class="item2_son item2_son1"  v-model="isAllSelected">全选
             <span class="item2_son item2_son2">商品信息</span>
 						<span class="item2_son item2_son3">商品规格</span>
             <span class="item2_son item2_son4">商品单价</span>
@@ -18,48 +18,48 @@
         </p>
     </div>
     <ul class="cart_main">
-		<li class="cart_product">
+		<li class="cart_product" v-for="(product,index) of products" :key="index">
             <div class="product">
 				<div class="product-item1">
-					<input type="checkbox">
+					<input type="checkbox" v-model="product.isSelected">
 				</div>
 				<div class="product-item product-item2">
-					<img src="03.png" alt="">
+					<img :src="`http://localhost:3000/${product.img_src}`" alt="">
 				</div >
 				<div class="product-item product-item3">
-					<p>优品新疆板栗南瓜1kg,皮薄肉多,1213</p>
+					<p>{{product.title}}</p>
 				</div>
 				<div class="product-item product-item4">
-					<p>大约5个</p>			      
+					<p></p>			      
 				</div>
                 <div class="product-item product-item5">
-                    <p class="new_price">现价:56.00</p>
-                    <p class="old_price">原价:127.00</p>
+                    <p class="new_price" v-show="product.new_price">现价:{{product.new_price}}</p>
+                    <p class="old_price" v-show="product.old_price">原价:{{product.old_price}}</p>
                 </div>
                 <div class="product-item product-item6">
-                    <button class="count">-</button>
-                    <input type="text">
-                    <button class="count">+</button>
+                    <button class="count" @click="addCount" data-step="-1" :data-index="index">-</button>
+                    <input type="text" v-model="product.count">
+                    <button class="count" @click="addCount" data-step="1" :data-index="index">+</button>
                 </div>
 				<div class="product-item product-item7">
 					<span>￥:73.00</span>
 				</div>
                 <div class="product-item product-item8">
                     <p>加入收藏夹</p>
-                    <p>删除</p>
+                    <p @click="remove" :data-index="index">删除</p>
                 </div>
             </div>
         </li>
     </ul>
     <div class="cart-bottom">
 		<div class="cart-item cart-item1">
-			<input type="checkbox">全选
+			<input type="checkbox" v-model="isAllSelected">全选
 		</div>
         <span class="cart-item cart-item2">删除</span>
         <span class="cart-item cart-item3">移入收藏夹</span>
         <span class="cart-item cart-item4">分享</span>
-        <span class="cart-item cart-item5">总计商品 <span>11</span> 件</span>
-        <span class="cart-item cart-item6">合计: <span>￥1234.00</span></span>
+        <span class="cart-item cart-item5">总计商品 <span>{{products.length}}</span> 件</span>
+        <span class="cart-item cart-item6">合计: <span>￥{{sum}}</span></span>
         <span class="cart-item cart-item7">结算</span>
     </div>
 </div>
@@ -74,19 +74,76 @@ export default {
      data(){
          return {
               products:[],
+              isAllSelected:false,
          }
      },
      created(){
          this.queryCart();
      },
-     method:{
+     methods:{
         //  查询购物车
         queryCart(){
              this.axios.get("http://localhost:3000/queryCart").then((res)=>{
-                    this.products=res.data
+                    if(res.data.code==-1){
+                         this.$router.push("/login");
+                    }else if(res.data.code==1){
+                         this.products=res.data.msg;
+                         for(var i=0;i<this.products.length;i++){
+                              this.products[i].isSelected=false;
+                         }
+                    }
             })    
         },
-     }
+        // 修改购物车商品数量
+        addCount(e){
+            var index=parseInt(e.target.dataset.index);
+            var step=parseInt(e.target.dataset.step);
+            var cid=this.products[index].cid;
+            this.products[index].count+=step;
+            if(this.products[index].count<1){
+                this.products[index].count=1
+            };
+            if(this.products[index].count>99){
+                this.products[index].count=99;
+            };
+            var count=this.products[index].count;
+            this.axios.get("http://localhost:3000/updateCart",{
+                params:{count,cid}
+            }).then((res)=>{
+                 if(res.data.code==-1){
+                      this.$router.push("/login");
+                 }
+            })
+        },
+        // 删除商品
+          remove(e){
+               var index=parseInt(e.target.dataset.index);
+               var cid=this.products[index].cid;
+               this.products.splice(index,1);
+               this.axios.get("http://localhost:3000/deleteCart",{
+                   params:{cid}
+               }).then((res)=>{
+                   if(res.data.code==-1){
+                       this.$router.push("/login")
+                   }
+               }) 
+          },
+     },
+     watch:{
+           isAllSelected(){
+                  for(var i=0;i<this.products.length;i++){
+                        this.products[i].isSelected=this.isAllSelected;
+                    }
+           }
+     },
+    //  计算属性
+    computed:{
+        sum(){
+            return this.products.reduce(function(prev,elem){
+                return prev+elem.new_price*elem.count;
+            },0)
+        }
+    }
 }
 </script>
 
@@ -184,6 +241,7 @@ export default {
             width:60px;
 			height:30px;
             box-sizing:border-box;
+            text-align: center;
 		}
 	.product>.product-item8{
            width:120px;
@@ -220,6 +278,9 @@ export default {
 	.cart-bottom>.cart-item6{
             width:240px;
 		}
+    .cart-bottom>.cart-item5>span,.cart-bottom>.cart-item6>span{
+        color:#f70738;
+    }
 	.cart-bottom>.cart-item7{
             width:160px;
 			color:#fff;
