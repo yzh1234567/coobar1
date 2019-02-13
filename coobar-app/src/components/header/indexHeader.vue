@@ -88,7 +88,7 @@
             </div>
             <div class="search-item2">
                 <div>
-                    <input type="text" placeholder="主人,搜索您想要的" class="search-box" v-model="kwords" @keyup.13="search"/>
+                    <input type="text" placeholder="主人,搜索您想要的" class="search-box" v-model.trim="kwords" @keyup.13="search"/>
                     <button class="search_btn" type="button" @click="search">点我</button>
                  </div>
                 <ul >

@@ -21,7 +21,7 @@
 		<li class="cart_product" v-for="(product,index) of products" :key="index">
             <div class="product">
 				<div class="product-item1">
-					<input type="checkbox" v-model="product.isSelected">
+					<input type="checkbox" v-model="product.isSelected" @click="selectBox">
 				</div>
 				<div class="product-item product-item2">
 					<img :src="`http://localhost:3000/${product.img_src}`" alt="">
@@ -75,12 +75,21 @@ export default {
          return {
               products:[],
               isAllSelected:false,
+              sum:0,
          }
      },
      created(){
          this.queryCart();
      },
      methods:{
+        //  点击按钮，确定购买的商品
+         selectBox(){
+             var isTrue=true;
+                for(var i=0;i<this.products.length;i++){
+                        isTrue=isTrue&&this.products[i].isSelected;
+                    };
+                this.isAllSelected=isTrue;
+         },
         //  查询购物车
         queryCart(){
              this.axios.get("http://localhost:3000/queryCart").then((res)=>{
@@ -131,18 +140,19 @@ export default {
      },
      watch:{
            isAllSelected(){
-                  for(var i=0;i<this.products.length;i++){
-                        this.products[i].isSelected=this.isAllSelected;
-                    }
-           }
+                 if(this.isAllSelected){
+                      for(var i=0;i<this.products.length;i++){
+                        this.products[i].isSelected=this.isAllSelected; 
+                        this.sum+=this.products[i].new_price*this.products[i].count;
+                      }
+                 }else{
+                        this.sum=0;
+                        };
+           },
      },
     //  计算属性
     computed:{
-        sum(){
-            return this.products.reduce(function(prev,elem){
-                return prev+elem.new_price*elem.count;
-            },0)
-        }
+       
     }
 }
 </script>
