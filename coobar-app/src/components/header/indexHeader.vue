@@ -113,7 +113,7 @@
                 <div>
                    <img src="http://localhost:3000/img/index-header/shop_car1.png" alt=""/>
                     <router-link to="/cart">我的购物车</router-link>
-                    <input type="text" value="0"/>
+                    <input type="text" v-model="value" />
                 </div>
             </div>   
         </div>
@@ -131,7 +131,8 @@
                       ,'江西','山东','河南','湖北','湖南','广东'
                       ,'海南','四川','贵州','云南','陕西','甘肃','青海','台湾'
                      ,'内蒙古','广西','西藏','宁夏','新疆','香港','澳门'],
-                userMsg:"您好,请登录"
+                userMsg:"您好,请登录",
+                value:0,
            }
        },
        created(){
@@ -139,6 +140,7 @@
             if(uname){
                 this.userMsg=uname
             };
+            this.queryCart();
        },
        methods: {
             handleSelect(key, keyPath) {
@@ -157,7 +159,17 @@
                 if(this.userMsg=="您好,请登录"){
                      this.$router.push("/login");
                 }
-            }
+            },
+            // 向后台发送请求，确定购物车商品数量
+             queryCart(){
+             this.axios.get("http://localhost:3000/queryCart").then((res)=>{
+                    if(res.data.code==-1){
+                         this.value=0;
+                    }else if(res.data.code==1){
+                         this.value=res.data.msg.length;
+                    }
+                })    
+            },
        },
   }
 </script>

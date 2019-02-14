@@ -316,6 +316,42 @@ router.get("/deleteCart",(req,res)=>{
         }
     });
 // 删除购物车所有商品
+});
+// 查询商品详情
+router.get("/productDetail",(req,res)=>{
+    var pid=req.query.pid;
+    var obj={},progress=0;
+    if(pid==undefined){
+        pid=1;
+    };
+    // sql语句1
+    var sql="select pic.img_sm,pic.img_md,pic.img_lg from coobar_product_img pic  where pic.pid=?";
+    pool.query(sql,[pid],(err,result)=>{
+        if(err) throw err;
+        if(result.length>0){
+            progress+=50;
+            obj.pics=result;
+            if(progress>=100){
+                res.send({code:1,msg:obj})
+            };    
+        }else {
+            res.send({code:-1,msg:"查询商品详情失败1"})
+        };
+    });
+    // sql语句2
+    var sql2="select p.old_price,p.new_price from coobar_products p where id=?";
+    pool.query(sql2,[pid],(err,result)=>{
+        if(err) throw err;
+        if(result.length>0){
+            progress+=50;
+            obj.details=result;
+            if(progress>=100){
+                res.send({code:1,msg:obj})
+            };
+        }else {
+            res.send({code:-1,msg:"查询商品详情失败2"})
+        }
+    })
 })
 // 导出路由
 module.exports=router;

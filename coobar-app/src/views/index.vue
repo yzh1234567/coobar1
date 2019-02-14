@@ -72,7 +72,7 @@
                               <img :src="`http://localhost:3000/${item.img_src}`" alt=""/>
                           </router-link>
                           <p class="detail">
-                              <router-link :to="`${item.href}${item.pid}`" class="detail">新西兰进口奇异果4kg(30-36个)新鲜美味</router-link>
+                              <router-link :to="`${item.href}${item.pid}`" class="detail">{{item.title}}</router-link>
                           </p>
                           <p class="price">
                               <span>尝鲜价:￥{{item.new_price}}</span>

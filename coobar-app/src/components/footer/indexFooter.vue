@@ -166,11 +166,12 @@ div.msg_guide>ul>li>a:hover{
 div.msg_guide2>ul{
     display: flex;
     justify-content: center;
+    padding:10px 0;
 }
 div.msg_guide2>ul>li>span{
     margin:0 8px 0 5px;
 }
 .my_copyright>p{
-    padding:20px 0;
+    padding:10px 0;
 }
 </style>

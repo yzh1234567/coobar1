@@ -1,5 +1,6 @@
 <template>
     <div class="app-cart">
+          <index-header></index-header>
           <div class="cart">
     <div class="cart_top">
         <p class="top_item top_item1">
@@ -21,7 +22,7 @@
 		<li class="cart_product" v-for="(product,index) of products" :key="index">
             <div class="product">
 				<div class="product-item1">
-					<input type="checkbox" v-model="product.isSelected" @click="selectBox">
+					<input type="checkbox" v-model="product.isSelected"  @click="selectBox">
 				</div>
 				<div class="product-item product-item2">
 					<img :src="`http://localhost:3000/${product.img_src}`" alt="">
@@ -42,7 +43,7 @@
                     <button class="count" @click="addCount" data-step="1" :data-index="index">+</button>
                 </div>
 				<div class="product-item product-item7">
-					<span>￥:73.00</span>
+					<span>￥:{{product.money}}</span>
 				</div>
                 <div class="product-item product-item8">
                     <p>加入收藏夹</p>
@@ -67,9 +68,10 @@
 </template>
 
 <script>
+import indexHeader from "@/components/header/indexHeader"
 export default {
      components:{
-
+       indexHeader,     
      },
      data(){
          return {
@@ -84,11 +86,14 @@ export default {
      methods:{
         //  点击按钮，确定购买的商品
          selectBox(){
+             console.log(this.isAllSelected);
              var isTrue=true;
                 for(var i=0;i<this.products.length;i++){
                         isTrue=isTrue&&this.products[i].isSelected;
+                        console.log(this.products[i].isSelected)
                     };
                 this.isAllSelected=isTrue;
+                console.log(this.isAllSelected);
          },
         //  查询购物车
         queryCart(){
@@ -99,6 +104,7 @@ export default {
                          this.products=res.data.msg;
                          for(var i=0;i<this.products.length;i++){
                               this.products[i].isSelected=false;
+                              this.products[i].money=this.products[i].count*this.products[i].new_price;
                          }
                     }
             })    
@@ -115,6 +121,7 @@ export default {
             if(this.products[index].count>99){
                 this.products[index].count=99;
             };
+            this.products[index].money=this.products[index].count*this.products[index].new_price;
             var count=this.products[index].count;
             this.axios.get("http://localhost:3000/updateCart",{
                 params:{count,cid}
@@ -149,6 +156,12 @@ export default {
                         this.sum=0;
                         };
            },
+        //    products:{
+        //        deep:true,
+        //        handle(a){
+        //            console.log(a)
+        //        }
+        //    }
      },
     //  计算属性
     computed:{
