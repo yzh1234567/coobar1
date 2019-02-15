@@ -22,7 +22,7 @@
 		<li class="cart_product" v-for="(product,index) of products" :key="index">
             <div class="product">
 				<div class="product-item1">
-					<input type="checkbox" v-model="product.isSelected"  @click="selectBox">
+					<input type="checkbox" v-model="product.isSelected"  @change="selectBox">
 				</div>
 				<div class="product-item product-item2">
 					<img :src="`http://localhost:3000/${product.img_src}`" alt="">
@@ -86,11 +86,9 @@ export default {
      methods:{
         //  点击按钮，确定购买的商品
          selectBox(){
-             console.log(this.isAllSelected);
              var isTrue=true;
                 for(var i=0;i<this.products.length;i++){
                         isTrue=isTrue&&this.products[i].isSelected;
-                        console.log(this.products[i].isSelected)
                     };
                 this.isAllSelected=isTrue;
                 console.log(this.isAllSelected);
@@ -147,21 +145,24 @@ export default {
      },
      watch:{
            isAllSelected(){
+                 for(var i=0;i<this.products.length;i++){
+                        this.products[i].isSelected=this.isAllSelected; 
+                      };
                  if(this.isAllSelected){
                       for(var i=0;i<this.products.length;i++){
-                        this.products[i].isSelected=this.isAllSelected; 
                         this.sum+=this.products[i].new_price*this.products[i].count;
+                        this.products[i].isSelected=this.isAllSelected; 
                       }
                  }else{
                         this.sum=0;
                         };
            },
-        //    products:{
-        //        deep:true,
-        //        handle(a){
-        //            console.log(a)
-        //        }
-        //    }
+           products:{
+               deep:true,
+               handler(a){
+                   console.log(a)
+               }
+           }
      },
     //  计算属性
     computed:{
