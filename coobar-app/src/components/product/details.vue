@@ -112,6 +112,7 @@
                             <a href="#">分享</a>
                         </p>
                         <div class="pm_item4">
+                            
                             <ul>
                                 <li>配送至</li>
                                 <li>
@@ -176,20 +177,19 @@
                         </div>
                         <p class="pm_item5">
                             <span>服务</span>
-                            <select>
-                                <option value="">
-                                    <a href="">客服服务</a>
-                                </option>
-                                <option value="">
-                                    <a href="">售后服务</a>
-                                </option>
-                            </select>
+                            <el-dropdown>
+                                <span class="el-dropdown-link">
+                                    更多选择<i class="el-icon-arrow-down el-icon--right"></i>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>售后服务</el-dropdown-item>
+                                    <el-dropdown-item>人工服务</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </p>
                         <p class="pm_item6">
                             <b>数量</b>
-                            <span>-</span>
-                            <span>1</span>
-                            <span>+</span>
+                             <el-input-number v-model="value" :min="1" :max="99" label="描述文字"></el-input-number>
                         </p>
                         <p class="pm_item7">
                             <a href="javascript:;" data-toggle="shopping_car">加入购物车</a>
@@ -406,6 +406,7 @@ export default {
          return {
              details:[],
              productPics:[],
+             value:1,
          }
      },  
       created(){
@@ -686,6 +687,7 @@ div.product_msg>p.pm_item6>span{
     background: #eee;
     font-size:20px;
     user-select: none;
+    margin-right:5px;
 }
 /*item7样式*/
 div.product_msg>p.pm_item7>a{

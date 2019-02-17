@@ -9,7 +9,7 @@
             <a href="javascript:;">库存紧张</a>
         </p>
         <p class="top_item top_item2">
-            <input type="checkbox" class="item2_son item2_son1"  v-model="isAllSelected">全选
+            <input type="checkbox" class="item2_son item2_son1"  v-model="isAllSelected" @change="AllSelected">全选
             <span class="item2_son item2_son2">商品信息</span>
 						<span class="item2_son item2_son3">商品规格</span>
             <span class="item2_son item2_son4">商品单价</span>
@@ -54,7 +54,7 @@
     </ul>
     <div class="cart-bottom">
 		<div class="cart-item cart-item1">
-			<input type="checkbox" v-model="isAllSelected">全选
+			<input type="checkbox" v-model="isAllSelected" @change="AllSelected">全选
 		</div>
         <span class="cart-item cart-item2">删除</span>
         <span class="cart-item cart-item3">移入收藏夹</span>
@@ -84,14 +84,32 @@ export default {
          this.queryCart();
      },
      methods:{
+        //  点击全选按钮
+         AllSelected(){
+                 for(var i=0;i<this.products.length;i++){
+                        this.products[i].isSelected=this.isAllSelected; 
+                      };
+                 if(this.isAllSelected){
+                      for(var i=0;i<this.products.length;i++){
+                        this.sum+=this.products[i].money;
+                        this.products[i].isSelected=this.isAllSelected; 
+                      }
+                 }else{
+                        this.sum=0;
+                        };
+         },
         //  点击按钮，确定购买的商品
          selectBox(){
              var isTrue=true;
+                 var sum=0;
                 for(var i=0;i<this.products.length;i++){
                         isTrue=isTrue&&this.products[i].isSelected;
+                        if(this.products[i].isSelected){
+                             sum+=this.products[i].money;
+                        }
                     };
+                this.sum=sum;
                 this.isAllSelected=isTrue;
-                console.log(this.isAllSelected);
          },
         //  查询购物车
         queryCart(){
@@ -144,25 +162,25 @@ export default {
           },
      },
      watch:{
-           isAllSelected(){
-                 for(var i=0;i<this.products.length;i++){
-                        this.products[i].isSelected=this.isAllSelected; 
-                      };
-                 if(this.isAllSelected){
-                      for(var i=0;i<this.products.length;i++){
-                        this.sum+=this.products[i].new_price*this.products[i].count;
-                        this.products[i].isSelected=this.isAllSelected; 
-                      }
-                 }else{
-                        this.sum=0;
-                        };
-           },
-           products:{
-               deep:true,
-               handler(a){
-                   console.log(a)
-               }
-           }
+        //    isAllSelected(){
+        //          for(var i=0;i<this.products.length;i++){
+        //                 this.products[i].isSelected=this.isAllSelected; 
+        //               };
+        //          if(this.isAllSelected){
+        //               for(var i=0;i<this.products.length;i++){
+        //                 this.sum+=this.products[i].new_price*this.products[i].count;
+        //                 this.products[i].isSelected=this.isAllSelected; 
+        //               }
+        //          }else{
+        //                 this.sum=0;
+        //                 };
+        //    },
+        //    products:{
+        //        deep:true,
+        //        handler(a){
+        //            console.log(a)
+        //        }
+        //    }
      },
     //  计算属性
     computed:{
