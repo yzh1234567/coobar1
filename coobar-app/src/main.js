@@ -7,6 +7,7 @@ Vue.config.productionTip = false
 // <!-- 1、引入第三方模块axios 、element-UI-->
 import axios from "axios"
 import ElementUI from "element-ui"
+import vueSeamless from "vue-seamless-scroll";
   //  引入element-ui组件库的css文件
 import "element-ui/lib/theme-chalk/index.css"
 // <!-- 2、修改axios配置信息，使跨域保存在session中 -->

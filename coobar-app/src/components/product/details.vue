@@ -113,7 +113,7 @@
                         </p>
                         <div class="pm_item4">
                             
-                            <ul>
+                            <!-- <ul>
                                 <li>配送至</li>
                                 <li>
                                     <ul>
@@ -173,14 +173,14 @@
                                         </div>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
                         <p class="pm_item5">
                             <span>服务</span>
                             <el-dropdown>
-                                <span class="el-dropdown-link">
+                                <el-button class="el-dropdown-link">
                                     更多选择<i class="el-icon-arrow-down el-icon--right"></i>
-                                </span>
+                                </el-button>
                                 <el-dropdown-menu slot="dropdown">
                                     <el-dropdown-item>售后服务</el-dropdown-item>
                                     <el-dropdown-item>人工服务</el-dropdown-item>
@@ -202,6 +202,18 @@
                         <!-- 8张广告图-->
                         <div class="product_right">
                             <div>
+                                <vue-Seamless :data="lists" :class-option="defaultOption">
+                                        <a href="javascript:;" v-for="(item,index) of lists" :key="index">
+                                            <img src="http://localhost:3000/img/F1_product/土豆1.jpg" alt=""/>
+                                            <div>
+                                                <p>新土豆4-5个重约2kg</p>
+                                                <p>￥4.5</p>
+                                            </div>
+                                        </a>
+                                </vue-Seamless>                               
+                            </div>
+                           
+                            <!-- <div>
                                 <a href="">
                                     <img src="http://localhost:3000/img/F1_product/土豆1.jpg" alt=""/>
                                     <div>
@@ -258,7 +270,7 @@
                                         <p>￥8.5</p>
                                     </div>
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- 上下指示符-->
                     </div>
@@ -401,6 +413,7 @@ import indexHeader from "@/components/header/indexHeader"
 export default {
     components:{
         indexHeader,
+        vueSeamless,
     },
     data(){
          return {
@@ -426,6 +439,20 @@ export default {
             })
         },
 
+      },
+      computed:{
+          defaultOption () {
+                return {
+                    step: 0.2, // 数值越大速度滚动越快
+                    limitMoveNum: 2, // 开始无缝滚动的数据量 this.dataList.length
+                    hoverStop: true, // 是否开启鼠标悬停stop
+                    direction: 0, // 0向下 1向上 2向左 3向右
+                    openWatch: true, // 开启数据实时监控刷新dom
+                    singleHeight: 0, // 单步运动停止的高度(默认值0是无缝不停止的滚动) direction => 0/1
+                    singleWidth: 0, // 单步运动停止的宽度(默认值0是无缝不停止的滚动) direction => 2/3
+                    waitTime: 1000 // 单步运动停止的时间(默认值1000ms)
+                }
+            },
       }
 }
 </script>
@@ -716,7 +743,7 @@ div.product_right>div:first-child{
     height:1280px;
     width:160px;
 }
-div.product_right>div:first-child>a{
+div.product_right>div:first-child a{
     display:block;
     width:160px;
     height:160px;
@@ -726,7 +753,7 @@ div.product_right>div:first-child img{
     width:90%;
     margin:8px;
 }
-div.product_right>div:first-child>a>div{
+div.product_right>div:first-child a>div{
     position:absolute;
     top:100px;left:0;
     z-index: 10;
@@ -734,10 +761,10 @@ div.product_right>div:first-child>a>div{
     background: rgba(255,255,255,0.4);
     display:none;
 }
-div.product_right>div:first-child>a:hover>div{
+div.product_right>div:first-child a:hover>div{
     display:block;
 }
-div.product_right>div:first-child>a>div>p{
+div.product_right>div:first-child a>div>p{
     margin-bottom: 0;
     width:160px;
     line-height:28px;
@@ -745,7 +772,7 @@ div.product_right>div:first-child>a>div>p{
     text-overflow:ellipsis;
     white-space: nowrap;
 }
-div.product_right>div:first-child>a>div>p:first-child{
+div.product_right>div:first-child a>div>p:first-child{
     width:100px;
     margin:0 auto;
 }
