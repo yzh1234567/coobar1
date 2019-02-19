@@ -78,6 +78,16 @@
                     </el-menu>        
                 </div> 
             </div> 
+             <div class="header_msg">
+                <div class="msg-item msg-item1">
+                    <img src="http://localhost:3000/img/icon/喇叭.png" alt="">
+                </div>
+                <div class="msg-item msg-item2">
+                    <vue-seamless  :data="info" :class-option="defaultOption" >
+                           <span v-for="(item,index) of info" :key="index">{{item.msg}}</span>  
+                    </vue-seamless > 
+                </div>
+            </div>
        </div>
         <div class="search">
              <div class="search-item1">
@@ -119,8 +129,14 @@
         </div>
    </div>
 </template>
+
 <script>
+// 引入第三方模块 vue-seamless-scroll
+import vueSeamless from "vue-seamless-scroll";
   export default {
+      components:{
+         vueSeamless
+      },
        data(){
            return {
                activeIndex:"1",
@@ -133,6 +149,7 @@
                      ,'内蒙古','广西','西藏','宁夏','新疆','香港','澳门'],
                 userMsg:"您好,请登录",
                 value:0,
+                info:[{msg:"通知:请先注册、登陆，加入购物车后，再购买；支付功能正在完善中，请谨慎支付..."}]
            }
        },
        created(){
@@ -171,6 +188,20 @@
                 })    
             },
        },
+       computed:{
+          defaultOption () {
+                return {
+                    step: 0.8, // 数值越大速度滚动越快
+                    limitMoveNum: 1, // 开始无缝滚动的数据量 this.dataList.length
+                    hoverStop: true, // 是否开启鼠标悬停stop
+                    direction: 2, // 0向下 1向上 2向左 3向右
+                    openWatch: true, // 开启数据实时监控刷新dom
+                    singleHeight: 0, // 单步运动停止的高度(默认值0是无缝不停止的滚动) direction => 0/1
+                    singleWidth: 0, // 单步运动停止的宽度(默认值0是无缝不停止的滚动) direction => 2/3
+                    waitTime: 1000 // 单步运动停止的时间(默认值1000ms)
+                }
+            },
+       }
   }
 </script>
 <style scoped>
@@ -178,6 +209,32 @@
     border-botton:1px solid #ddd;
     background:#e3e4e5;
     color:#999;
+}
+.my_header_top>.header_msg{
+    display:flex;
+    align-items:center;
+    width:100%;
+    height:60px;
+}
+.header_msg>.msg-item1{
+    width:200px;
+    display:flex;
+    justify-content:flex-end;
+    align-items:cneter;
+}
+.header_msg>.msg-item1 img{
+    color:#ff0;
+}
+.header_msg>.msg-item2{
+    width:1000px;
+    overflow:hidden;
+}
+.header_msg>.msg-item2 span{
+    width:1000px;height:60px;
+    display:inline-block;
+    line-height:60px;
+    font-size:24px;
+    color:#f70738;
 }
 .my_header_top>.container{
     width:1200px;

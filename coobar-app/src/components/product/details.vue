@@ -27,44 +27,23 @@
                     <div class="product_picture">
                         <!-- 产品大图-->
                         <div class="big_picture">
-                            <img class="show" src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb1.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb2.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb3.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb4.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb5.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb6.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb7.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb8.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb9.jpg" alt=""/>
-                            <img src="http://localhost:3000/img/produc_details/product_details1/big_picture/pb10.jpg" alt=""/>
+                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index"/>
                         </div>
                         <div class="super_mask">
-
                         </div>
                         <div class="bigger_picture">
-                            <img src="" alt=""/>
+                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index"/>
                         </div>
                         <div class="mask"></div>
                         <!-- 产品小图-->
                         <div class="small_picture">
-                            <ul>
-                                <li>
-                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps1.jpg" alt=""/>
-                                </li>
-                                <li>
-                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps2.jpg" alt=""/>
-                                </li>
-                                <li>
-                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps3.jpg" alt=""/>
-                                </li>
-                                <li>
-                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps4.jpg" alt=""/>
-                                </li>
-                                <li>
-                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps5.jpg" alt=""/>
-                                </li>
-                            </ul>
-                            <ul>
+                            <div>
+                                <div  v-for=" (item,index) of productPics" :key="index" 
+                                :class="[count==index?'active':'']">
+                                    <img :src="`http://localhost:3000/${item.img_sm}`" alt=""/>
+                                </div>
+                            </div>
+                            <!-- <ul>
                                 <li>
                                     <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps6.jpg" alt=""/>
                                 </li>
@@ -80,7 +59,13 @@
                                 <li>
                                     <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps10.jpg" alt=""/>
                                 </li>
-                            </ul>
+                            </ul> -->
+                            <button class="btn btn-left" @click="picPrev" :disabled="count==0">
+                                <i class="el-icon-arrow-left"></i>
+                            </button>
+                            <button class="btn btn-right" @click="picNext" :disabled="count==productPics.length-1">
+                                <i class="el-icon-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                     <!-- 产品信息-->
@@ -204,10 +189,10 @@
                             <div>
                                 <vue-Seamless :data="lists" :class-option="defaultOption">
                                         <a href="javascript:;" v-for="(item,index) of lists" :key="index">
-                                            <img src="http://localhost:3000/img/F1_product/土豆1.jpg" alt=""/>
+                                            <img :src="`http://localhost:3000/img/F1_product/${item.img}`" alt=""/>
                                             <div>
-                                                <p>新土豆4-5个重约2kg</p>
-                                                <p>￥4.5</p>
+                                                <p>{{item.title}}</p>
+                                                <p>￥{{item.price}}</p>
                                             </div>
                                         </a>
                                 </vue-Seamless>                               
@@ -410,6 +395,8 @@
 </template>
 <script>
 import indexHeader from "@/components/header/indexHeader"
+// 下载的第三方模块 vue-seamless-scroll
+import vueSeamless from "vue-seamless-scroll";
 export default {
     components:{
         indexHeader,
@@ -420,6 +407,18 @@ export default {
              details:[],
              productPics:[],
              value:1,
+             lists:[
+                 {img:"土豆1.jpg",title:"新土豆4-5个重约2kg",price:4.5},
+                 {img:"洋葱1.jpg",title:"湖南洋葱2个装(单个重0.5kg)",price:6.5},
+                 {img:"西红柿1.jpg",title:"山东西红柿2kg",price:10.5},
+                 {img:"玉米.jpg",title:"湖北甜玉米3根装重约750g",price:9.9},
+                 {img:"红薯1.jpg",title:"福建蜜薯500g(单个重约260g)",price:5.9},
+                 {img:"金针菇1.jpg",title:"甘肃金针菇500g",price:6.9},
+                 {img:"黄瓜1.jpg",title:"本地大棚黄瓜3根装(单根重150g)",price:7.9},
+                 {img:"松花菜1.jpg",title:"云南松花菜1颗(重约1.6kg)",price:8.5}
+                 ],
+             count:0,
+             num:0,
          }
      },  
       created(){
@@ -438,13 +437,20 @@ export default {
                  }
             })
         },
-
+        // 点击头部产品信息照片进入上一页
+           picPrev(){
+                this.count--;
+           },
+           // 点击头部产品信息照片进入下一页
+           picNext(){
+                 this.count++;
+           },
       },
       computed:{
           defaultOption () {
                 return {
-                    step: 0.2, // 数值越大速度滚动越快
-                    limitMoveNum: 2, // 开始无缝滚动的数据量 this.dataList.length
+                    step: 0.8, // 数值越大速度滚动越快
+                    limitMoveNum: 4, // 开始无缝滚动的数据量 this.dataList.length
                     hoverStop: true, // 是否开启鼠标悬停stop
                     direction: 0, // 0向下 1向上 2向左 3向右
                     openWatch: true, // 开启数据实时监控刷新dom
@@ -456,7 +462,7 @@ export default {
       }
 }
 </script>
-<style >
+<style scoped>
     .app-details>div{
     width:1200px;
     margin:0 auto;
@@ -488,11 +494,8 @@ div.big_picture>img{
     width:100%;
     position:absolute;
     top:0;left:0;
-    opacity:0;
 }
-div.big_picture>img.show{
-    opacity:1;
-}
+
 /*div.mask装饰，当鼠标到达页面时。显示*/
 div.mask{
     background:rgba(200,200,200,0.45);
@@ -533,17 +536,42 @@ div.bigger_picture>img{
     top:0;left:0;
 }
 /*产品小图样式*/
-div.small_picture>ul{
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
+div.small_picture{
+    position:relative;
+}
+div.small_picture>div{
+    width:400px;
+    display:flex;
     margin:6px 0;
+    overflow:hidden;
 }
-div.small_picture>ul>li{
+div.small_picture>div>div{
     border:1px solid #eee;
+    width:80px;
+    height:80px;
+    padding:8px;
+    box-sizing:border-box;
 }
-div.small_picture>ul>li:hover{
+div.small_picture>div>div.active{
+     border:1px solid #00c65d;
+}
+div.small_picture>div>div:hover{
     border:1px solid #00c65d;
+}
+div.small_picture:hover>.btn{
+    display:block;
+}
+div.small_picture>.btn{
+    width:20px;height:60px;
+    position:absolute;
+    top:10px;
+    display:none;  
+}
+div.small_picture>.btn-left{
+    left:0;
+}
+div.small_picture>.btn-right{
+    right:0;
 }
 /*产品信息*/
 div.product_msg{
@@ -835,11 +863,11 @@ div.product_evaluate>div:nth-child(2){
 }
 div.product_evaluate>div:nth-child(2)>div.score{
     width:120px;
-    height:120px;
+    height:100px;
     border:20px solid #00c65d;
     border-radius: 50%;
     text-align: center;
-    line-height: 80px;
+    line-height: 100px;
     font-size: 24px;
 }
 div.product_evaluate>div:nth-child(2)>div:last-child>ul{
