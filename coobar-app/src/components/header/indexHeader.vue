@@ -269,7 +269,7 @@ import vueSeamless from "vue-seamless-scroll";
 /* 位置样式 */
 .address{
     position:absolute;
-    top:61px;left:0;
+    top:60px;left:0;
     background:#e3e4e5; 
     display: none;
     z-index: 2000;
@@ -279,7 +279,7 @@ import vueSeamless from "vue-seamless-scroll";
     display: block;
     width:200px;
     height:6px;
-    background:#f5f5f5;
+    background:##e3e4e5;
 }
 .address-item{
     display: flex;

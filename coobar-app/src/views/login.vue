@@ -49,14 +49,17 @@
                    </tr>
                </table>
            </form>
-        </div>    
+        </div> 
+        <index-footer></index-footer>   
     </div>
 </template>
 <script>
 import grass from "../components/header/grass.vue";
+import indexFooter from "../components/footer/indexFooter";
 export default {
     components:{
         "grass-box":grass,
+        indexFooter,
     },
     data(){
        return {

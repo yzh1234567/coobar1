@@ -9,6 +9,7 @@ import products  from "./components/product/products"
 import register from "./views/register.vue"
 import cart from "./views/cart.vue"
 import detail from "./components/product/details"
+import side from "./components/side/side"
 Vue.use(Router)
 
 export default new Router({
@@ -22,6 +23,7 @@ export default new Router({
     {path:"/login",component:login},
     {path:"/loginerr",component:loginErr},
     {path:"/register",component:register},
-    {path:"/cart",component:cart}
+    {path:"/cart",component:cart},
+    {path:"/side",component:side}
   ]
 })
