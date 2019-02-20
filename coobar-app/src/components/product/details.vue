@@ -27,19 +27,19 @@
                     <div class="product_picture">
                         <!-- 产品大图-->
                         <div class="big_picture">
-                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index"/>
+                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index" />
                         </div>
-                        <div class="super_mask">
+                        <div class="super_mask" @mousemove="mdPic">
                         </div>
                         <div class="bigger_picture">
-                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index"/>
+                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index" :style="{left:left1+'px',top:top1+'px'}"/>
                         </div>
-                        <div class="mask"></div>
+                        <div class="mask" :style="{left:left+'px',top:top+'px'}"></div>
                         <!-- 产品小图-->
                         <div class="small_picture">
                             <div>
                                 <div  v-for=" (item,index) of productPics" :key="index" 
-                                :class="[count==index?'active':'']">
+                                :class="[count==index?'active':'']" v-show="count-5<index" @mouseenter="inPic" :data-index="index">
                                     <img :src="`http://localhost:3000/${item.img_sm}`" alt=""/>
                                 </div>
                             </div>
@@ -419,6 +419,10 @@ export default {
                  ],
              count:0,
              num:0,
+             left:0,
+             top:0,
+             left1:0,
+             top1:0,
          }
      },  
       created(){
@@ -437,13 +441,35 @@ export default {
                  }
             })
         },
-        // 点击头部产品信息照片进入上一页
+        // 点击头部产品信息小照片进入上一页
            picPrev(){
                 this.count--;
            },
-           // 点击头部产品信息照片进入下一页
+        // 点击头部产品信息小照片进入下一页
            picNext(){
                  this.count++;
+           },
+        // 鼠标进入头部产品信息小照片
+            inPic(e){
+                 var index=parseInt(e.target.dataset.index);
+                 this.count=index;  
+            },
+        // 放大镜效果
+           mdPic(e){
+                  this.top=e.offsetY-50;
+                  this.left=e.offsetX-50;
+                  if(this.top<0){
+                      this.top=0
+                  }else if(this.top>300){
+                      this.top=300
+                  };
+                    if(this.left<0){
+                      this.left=0
+                  }else if(this.left>300){
+                      this.left=300
+                  };
+                  this.top1=-this.top;
+                  this.left1=-this.left;
            },
       },
       computed:{
@@ -501,7 +527,6 @@ div.mask{
     background:rgba(200,200,200,0.45);
     width:100px;height:100px;
     position:absolute;
-    top:0;left:0;
     display:none;
     z-index: 1;
 }
@@ -533,7 +558,6 @@ div.bigger_picture{
 }
 div.bigger_picture>img{
      position:absolute;
-    top:0;left:0;
 }
 /*产品小图样式*/
 div.small_picture{
@@ -554,9 +578,6 @@ div.small_picture>div>div{
 }
 div.small_picture>div>div.active{
      border:1px solid #00c65d;
-}
-div.small_picture>div>div:hover{
-    border:1px solid #00c65d;
 }
 div.small_picture:hover>.btn{
     display:block;
