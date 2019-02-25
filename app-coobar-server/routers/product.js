@@ -46,7 +46,7 @@ var router=express.Router();
 
 // 功能2,获取轮播广告照片
 router.get("/getImg",(req,res)=>{
-    var sql="select id,img,src from coobar_adImg";
+    var sql="select id,img,src from coobar_adimg";
     pool.query(sql,(err,result)=>{
         if(err) throw err;
         if(result.length>0){

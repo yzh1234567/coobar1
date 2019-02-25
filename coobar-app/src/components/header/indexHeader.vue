@@ -80,7 +80,7 @@
             </div> 
              <div class="header_msg">
                 <div class="msg-item msg-item1">
-                    <img src="http://localhost:3000/img/icon/喇叭.png" alt="">
+                    <img src="http://coobar.applinzi.com/img/icon/喇叭.png" alt="">
                 </div>
                 <div class="msg-item msg-item2">
                     <vue-seamless  :data="info" :class-option="defaultOption" >
@@ -91,7 +91,7 @@
        </div>
         <div class="search">
              <div class="search-item1">
-                    <img src="http://localhost:3000/img/index-header/logo.jpg" alt="" class=" my_logo"/>
+                    <img src="http://coobar.applinzi.com/img/index-header/logo.jpg" alt="" class=" my_logo"/>
                      <h6>主人, 欢迎来到coobar</h6>
                      <router-link to="/login">主人,请登陆</router-link>
                      <router-link to="/register">主人,请注册</router-link>
@@ -121,7 +121,7 @@
             </div>
          <div class="search-item3">
                 <div>
-                   <img src="http://localhost:3000/img/index-header/shop_car1.png" alt=""/>
+                   <img src="http://coobar.applinzi.com/img/index-header/shop_car1.png" alt=""/>
                     <router-link to="/cart">我的购物车</router-link>
                     <input type="text" v-model="value" />
                 </div>
@@ -179,7 +179,7 @@ import vueSeamless from "vue-seamless-scroll";
             },
             // 向后台发送请求，确定购物车商品数量
              queryCart(){
-             this.axios.get("http://localhost:3000/queryCart").then((res)=>{
+             this.axios.get("http://coobar.applinzi.com/queryCart").then((res)=>{
                     if(res.data.code==-1){
                          this.value=0;
                     }else if(res.data.code==1){

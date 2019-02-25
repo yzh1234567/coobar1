@@ -2,10 +2,10 @@
     <div class="app-side">
         <div class="side" v-show="top>200">
             <a href="#" title="返回顶部">
-                 <img src="http://localhost:3000/img/icon/返回顶部.png">
+                 <img src="http://coobar.applinzi.com/img/icon/返回顶部.png">
             </a>
             <router-link to="/" title="返回主页">
-                   <img src="http://localhost:3000/img/icon/主页.png">
+                   <img src="http://coobar.applinzi.com/img/icon/主页.png">
             </router-link>
         </div> 
     </div>

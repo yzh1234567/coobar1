@@ -3,7 +3,7 @@
           <el-carousel height="570px">
                <el-carousel-item v-for="item in lists" :key="item.id">
                     <router-link :to="item.src">
-                      <img :src="`http://localhost:3000/${item.img}`" alt="">
+                      <img :src="`http://coobar.applinzi.com/${item.img}`" alt="">
                     </router-link>
                </el-carousel-item>
           </el-carousel>

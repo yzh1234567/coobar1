@@ -201,7 +201,7 @@
                         var  upwd=this.upwd;
                         var phone=this.phone;
                         console.log(phone,upwd)
-                        this.axios.post("http://localhost:3000/register","uname="+uname+"&upwd="+upwd+"&phone="+phone
+                        this.axios.post("http://coobar.applinzi.com/register","uname="+uname+"&upwd="+upwd+"&phone="+phone
                             ).then((res)=>{
                                 if(res.data.code==1){
                                     this.msg=res.data.msg;

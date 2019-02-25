@@ -41,7 +41,7 @@
                       <div class="F1" v-for=" (item,value) of F1_lists" :key="item.id">
                           <div class="F1_product1">
                              <router-link :to="`${item.href}${item.pid}`" class="product">
-                                   <img :src="`http://localhost:3000/${item.img_src}`" alt=""/>
+                                   <img :src="`http://coobar.applinzi.com/${item.img_src}`" alt=""/>
                              </router-link>
                               <p class="price">
                                   <span>现价:￥{{item.new_price}}</span>
@@ -69,7 +69,7 @@
                   <div class="F2" v-for="(item,value) of F2_lists" :key="item.id">
                       <div class="F1_product1">
                           <router-link :to="`${item.href}${item.pid}`" class="product">
-                              <img :src="`http://localhost:3000/${item.img_src}`" alt=""/>
+                              <img :src="`http://coobar.applinzi.com/${item.img_src}`" alt=""/>
                           </router-link>
                           <p class="detail">
                               <router-link :to="`${item.href}${item.pid}`" class="detail">{{item.title}}</router-link>
@@ -96,7 +96,7 @@
                                     <!-- 产品1-->
                                     <div class="F1_product1" v-for="item of list3" :key="item.id">
                                         <router-link :to="`${item.href}${item.pid}`">
-                                             <img :src="`http://localhost:3000/${item.img_src}`" alt="">
+                                             <img :src="`http://coobar.applinzi.com/${item.img_src}`" alt="">
                                         </router-link>
                                         <p class="detail">
                                             <router-link :to="`${item.href}${item.pid}`">
@@ -147,7 +147,7 @@ export default {
                  var value=parseInt(e.target.dataset.value);
                  var pid=this. F1_lists[value].pid;
                  var count=this. F1_lists[value].count;
-                 this.axios.get("http://localhost:3000/addCart",{
+                 this.axios.get("http://coobar.applinzi.com/addCart",{
                      params:{pid,count}
                  }).then((res)=>{
                      if(res.data.code==-1){
@@ -161,7 +161,7 @@ export default {
                  var value=parseInt(e.target.dataset.value);
                  var pid=this. F2_lists[value].pid;
                  var count=this. F2_lists[value].count;
-                 this.axios.get("http://localhost:3000/addCart",{
+                 this.axios.get("http://coobar.applinzi.com/addCart",{
                      params:{pid,count}
                  }).then((res)=>{
                      if(res.data.code==-1){
@@ -172,15 +172,17 @@ export default {
              },
             // 获取轮播图照片
             getImg(){
-                this.axios.get("http://localhost:3000/getImg").then(res=>{
+                this.axios.get("http://coobar.applinzi.com/getImg").then(res=>{
                     if(res.data.code==1){
                         this.lists=res.data.data;
                     }
-                })
+                }).catch(function (reason) {
+                    console.log('失败：' + reason);
+                });
             },
             // 获取F1专区的信息;
             getInfo_F1(){
-                  this.axios.get("http://localhost:3000/getIndexF1").then(res=>{
+                  this.axios.get("http://coobar.applinzi.com/getIndexF1").then(res=>{
                     if(res.data.code==1){
                         this.F1_lists=res.data.data;
                     }
@@ -188,7 +190,7 @@ export default {
             },
              // 获取F1专区的信息;
             getInfo_F2(){
-                  this.axios.get("http://localhost:3000/getIndexF2").then(res=>{
+                  this.axios.get("http://coobar.applinzi.com/getIndexF2").then(res=>{
                     if(res.data.code==1){
                         this.F2_lists=res.data.data;
                     }
@@ -196,7 +198,7 @@ export default {
             },
              // 获取F1专区的信息;
             getInfo_F3(){
-                  this.axios.get("http://localhost:3000/getIndexF3").then(res=>{
+                  this.axios.get("http://coobar.applinzi.com/getIndexF3").then(res=>{
                     if(res.data.code==1){
                         this.F3_lists=res.data.data;
                     }
