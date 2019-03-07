@@ -25,7 +25,7 @@
 					<input type="checkbox" v-model="product.isSelected"  @change="selectBox">
 				</div>
 				<div class="product-item product-item2">
-					<img :src="`http://coobar.applinzi.com/${product.img_src}`" alt="">
+					<img :src="`http://localhost:3000/${product.img_src}`" alt="">
 				</div >
 				<div class="product-item product-item3">
 					<p>{{product.title}}</p>
@@ -113,7 +113,7 @@ export default {
          },
         //  查询购物车
         queryCart(){
-             this.axios.get("http://coobar.applinzi.com/queryCart").then((res)=>{
+             this.axios.get("http://localhost:3000/queryCart").then((res)=>{
                     if(res.data.code==-1){
                          this.$router.push("/login");
                     }else if(res.data.code==1){
@@ -139,7 +139,7 @@ export default {
             };
             this.products[index].money=this.products[index].count*this.products[index].new_price;
             var count=this.products[index].count;
-            this.axios.get("http://coobar.applinzi.com/updateCart",{
+            this.axios.get("http://localhost:3000/updateCart",{
                 params:{count,cid}
             }).then((res)=>{
                  if(res.data.code==-1){
@@ -152,7 +152,7 @@ export default {
                var index=parseInt(e.target.dataset.index);
                var cid=this.products[index].cid;
                this.products.splice(index,1);
-               this.axios.get("http://coobar.applinzi.com/deleteCart",{
+               this.axios.get("http://localhost:3000/deleteCart",{
                    params:{cid}
                }).then((res)=>{
                    if(res.data.code==-1){

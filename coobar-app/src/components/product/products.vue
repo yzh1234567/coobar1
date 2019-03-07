@@ -118,7 +118,7 @@
 										 <ul class="product_list">
 												 <li v-for="(product,value) of products"  :key="value">
                                                          <router-link :to="`${product.href}${product.id}`">
-																 <img :src="`http://coobar.applinzi.com/${product.img_src}`" alt=""/>
+																 <img :src="`http://localhost:3000/${product.img_src}`" alt=""/>
 														 </router-link>
 														 <p class="price">
                                                              <span>折扣价:￥{{product.new_price}}</span>
@@ -182,7 +182,7 @@ export default {
                  var value=parseInt(e.target.dataset.value);
                  var pid=this. products[value].id;
                  var count=this. products[value].count;
-                 this.axios.get("http://coobar.applinzi.com/addCart",{
+                 this.axios.get("http://localhost:3000/addCart",{
                      params:{pid,count}
                  }).then((res)=>{
                      if(res.data.code==-1){
@@ -227,7 +227,7 @@ export default {
               var pno=this.pageIndex;
               var pageSize=this.pageSize;
                var kwords=this.kwords;
-               this.axios.get("http://coobar.applinzi.com/products",{
+               this.axios.get("http://localhost:3000/products",{
                    params:{kwords,pno,pageSize}
                }).then((res)=>{
                    this.pageCount=res.data.pageCount;

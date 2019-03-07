@@ -111,7 +111,7 @@ export default {
              if(this.isRight1&&this.isRight2){
                  var uname=this.uname;
                  var upwd=this.upwd;
-                 this.axios.post("http://coobar.applinzi.com/login","uname="+uname+"&upwd="+upwd).then((res)=>{
+                 this.axios.post("http://localhost:3000/login","uname="+uname+"&upwd="+upwd).then((res)=>{
                       if(res.data.code>0){
                           sessionStorage.setItem("uname",uname);
                           this.$router.push("/");

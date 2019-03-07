@@ -27,12 +27,12 @@
                     <div class="product_picture">
                         <!-- 产品大图-->
                         <div class="big_picture">
-                            <img :src="`http://coobar.applinzi.com/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index" />
+                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index" />
                         </div>
                         <div class="super_mask" @mousemove="mdPic">
                         </div>
                         <div class="bigger_picture">
-                            <img :src="`http://coobar.applinzi.com/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index" :style="{left:left1+'px',top:top1+'px'}"/>
+                            <img :src="`http://localhost:3000/${product.img_md}`" alt="" v-for="(product,index) of productPics" :key="index"  v-show="count==index" :style="{left:left1+'px',top:top1+'px'}"/>
                         </div>
                         <div class="mask" :style="{left:left+'px',top:top+'px'}"></div>
                         <!-- 产品小图-->
@@ -40,24 +40,24 @@
                             <div>
                                 <div  v-for=" (item,index) of productPics" :key="index" 
                                 :class="[count==index?'active':'']" v-show="count-5<index" @mouseenter="inPic" :data-index="index">
-                                    <img :src="`http://coobar.applinzi.com/${item.img_sm}`" alt=""/>
+                                    <img :src="`http://localhost:3000/${item.img_sm}`" alt=""/>
                                 </div>
                             </div>
                             <!-- <ul>
                                 <li>
-                                    <img src="http://coobar.applinzi.com/img/produc_details/product_details1/small_picture/ps6.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps6.jpg" alt=""/>
                                 </li>
                                 <li>
-                                    <img src="http://coobar.applinzi.com/img/produc_details/product_details1/small_picture/ps7.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps7.jpg" alt=""/>
                                 </li>
                                 <li>
-                                    <img src="http://coobar.applinzi.com/img/produc_details/product_details1/small_picture/ps8.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps8.jpg" alt=""/>
                                 </li>
                                 <li>
-                                    <img src="http://coobar.applinzi.com/img/produc_details/product_details1/small_picture/ps9.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps9.jpg" alt=""/>
                                 </li>
                                 <li>
-                                    <img src="http://coobar.applinzi.com/img/produc_details/product_details1/small_picture/ps10.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/produc_details/product_details1/small_picture/ps10.jpg" alt=""/>
                                 </li>
                             </ul> -->
                             <button class="btn btn-left" @click="picPrev" :disabled="count==0">
@@ -189,7 +189,7 @@
                             <div>
                                 <vue-Seamless :data="lists" :class-option="defaultOption">
                                         <a href="javascript:;" v-for="(item,index) of lists" :key="index">
-                                            <img :src="`http://coobar.applinzi.com/img/F1_product/${item.img}`" alt=""/>
+                                            <img :src="`http://localhost:3000/img/F1_product/${item.img}`" alt=""/>
                                             <div>
                                                 <p>{{item.title}}</p>
                                                 <p>￥{{item.price}}</p>
@@ -200,56 +200,56 @@
                            
                             <!-- <div>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/土豆1.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/土豆1.jpg" alt=""/>
                                     <div>
                                         <p>新土豆4-5个重约2kg</p>
                                         <p>￥4.5</p>
                                     </div>
                                 </a>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/洋葱1.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/洋葱1.jpg" alt=""/>
                                     <div>
                                         <p>湖南洋葱2个装(单个重0.5kg)</p>
                                         <p>￥6.5</p>
                                     </div>
                                 </a>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/西红柿1.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/西红柿1.jpg" alt=""/>
                                     <div>
                                         <p>山东西红柿2kg</p>
                                         <p>￥10.5</p>
                                     </div>
                                 </a>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/玉米.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/玉米.jpg" alt=""/>
                                     <div>
                                         <p>湖北甜玉米3根装重约750g</p>
                                         <p>￥9.9</p>
                                     </div>
                                 </a>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/红薯1.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/红薯1.jpg" alt=""/>
                                     <div>
                                         <p>福建蜜薯500g(单个重约260g)</p>
                                         <p>￥5.9</p>
                                     </div>
                                 </a>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/金针菇1.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/金针菇1.jpg" alt=""/>
                                     <div>
                                         <p>甘肃金针菇500g</p>
                                         <p>￥6.9</p>
                                     </div>
                                 </a>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/黄瓜1.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/黄瓜1.jpg" alt=""/>
                                     <div>
                                         <p>本地大棚黄瓜3根装(单根重150g)</p>
                                         <p>￥7.9</p>
                                     </div>
                                 </a>
                                 <a href="">
-                                    <img src="http://coobar.applinzi.com/img/F1_product/松花菜1.jpg" alt=""/>
+                                    <img src="http://localhost:3000/img/F1_product/松花菜1.jpg" alt=""/>
                                     <div>
                                         <p>云南松花菜1颗(重约1.6kg)</p>
                                         <p>￥8.5</p>
@@ -281,7 +281,7 @@
                             <li>商品产地:新疆</li>
                             <li>包装:精装</li>
                         </ul>
-                        <img src="http://coobar.applinzi.com/img/produc_details/product_details1/long-picture/20180914061402870.jpg" alt=""/>
+                        <img src="http://localhost:3000/img/produc_details/product_details1/long-picture/20180914061402870.jpg" alt=""/>
                     </div>
                     <!-- 售后服务-->
                     <div class="product_serve">
@@ -432,7 +432,7 @@ export default {
         //    获取详情
         getDetails(){
             var pid=1;
-            this.axios.get("http://coobar.applinzi.com/productDetail",{
+            this.axios.get("http://localhost:3000/productDetail",{
                 params:{pid}
             }).then((res)=>{
                  if(res.data.code==1){
