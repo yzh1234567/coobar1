@@ -113,6 +113,8 @@ export default {
                  var upwd=this.upwd;
                  this.axios.post("http://localhost:3000/login","uname="+uname+"&upwd="+upwd).then((res)=>{
                       if(res.data.code>0){
+                          console.log(this.$store)
+                          this.$store.commit("modifyLogin");
                           sessionStorage.setItem("uname",uname);
                           this.$router.push("/");
                       }else if(res.data.code==-5){

@@ -18,10 +18,14 @@ Vue.prototype.axios=axios;
 // 建立全局路由守卫
 router.beforeEach((to,from ,next)=>{
       var blackList=["/cart"];
+      // 获取用户登录状态;
+      var isLogin=store.state.user.isLogin;
       // 设置进入的页面路由是否有权限进入
       var path=to.path;
       if(blackList.indexOf(path)>=0){
-           next({path:"/login"})
+           if(isLogin==false){
+               next({path:"/login"})
+           }
       }
         next(); 
 })
