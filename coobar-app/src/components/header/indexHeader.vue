@@ -133,6 +133,8 @@
 <script>
 // 引入第三方模块 vue-seamless-scroll
 import vueSeamless from "vue-seamless-scroll";
+import { mapState }  from  "vuex";
+ 
   export default {
       components:{
          vueSeamless
@@ -179,13 +181,28 @@ import vueSeamless from "vue-seamless-scroll";
             },
             // 向后台发送请求，确定购物车商品数量
              queryCart(){
-             this.axios.get("http://localhost:3000/queryCart").then((res)=>{
-                    if(res.data.code==-1){
-                         this.value=0;
-                    }else if(res.data.code==1){
-                         this.value=res.data.msg.length;
-                    }
-                })    
+                      var isLogin=this.$store.state.user.isLogin;
+                      if(isLogin){
+                            this.$store.dispatch("asyncModifyCount").then(res=>{
+                                  if(res.data.code==1){
+                                       var num=res.data.msg.length;
+                                       this.$store.commit("modifyCount",num);
+                                       this.value=this.$store.state.cart.count;
+                                  }else if(res.data.code==-1){
+                                        this.value=0;
+                                  }
+                            })
+                      }else{
+                           this.value=this.$store.state.cart.count;
+                      }
+                    
+            //  this.axios.get("http://localhost:3000/queryCart").then((res)=>{
+            //         if(res.data.code==-1){
+            //              this.value=0;
+            //         }else if(res.data.code==1){
+            //              this.value=res.data.msg.length;
+            //         }
+            //     })    
             },
        },
        computed:{

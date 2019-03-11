@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from "axios"
 
 Vue.use(Vuex)
 
@@ -24,13 +25,17 @@ const userModule={
 // 把用户购物车中商品数量的状态储存在vuex里面
 const   cartModule={
          state:{
-
+              count:0,
          },
          mutations:{
-
+             modifyCount:(state,newCount)=>{
+                   state.count=newCount;
+             }
          },
          actions:{
-
+              asyncModifyCount:({commit})=>{
+                  return  axios.get("http://localhost:3000/queryCart")   
+              }
          },
          getters:{
 
@@ -39,6 +44,6 @@ const   cartModule={
 export default new Vuex.Store({
     modules:{
         user:userModule,
-        Cart:cartModule,
+        cart:cartModule,
     }
 })

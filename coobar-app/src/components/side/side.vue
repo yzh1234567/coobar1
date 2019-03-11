@@ -26,7 +26,7 @@ export default {
             document.addEventListener('scroll',()=>{
                  this.top=window.pageYOffset
             }, false);  
-    }
+          }
      },
 }
 </script>
