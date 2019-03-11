@@ -141,8 +141,17 @@ export default {
         this.getInfo_F2();
         this.getInfo_F3();
     },
+     // 离开主页
+    beforeRouteLeave(to,from,next){
+        var position=window.scrollY;
+        if(!position){
+            position=0;
+        };
+        this.$store.commit("modifyScrollY",position);
+        next();
+    },
     methods:{
-            //商品加入购物车
+            //F1商品加入购物车
              addCart(e){
                  var value=parseInt(e.target.dataset.value);
                  var pid=this. F1_lists[value].pid;
@@ -152,11 +161,13 @@ export default {
                  }).then((res)=>{
                      if(res.data.code==-1){
                          this.$router.push("/login")
+                     }else if(res.data.code==1){
+                         this.$store.commit("addCount")
                      }
                  })
 
              },
-            //商品加入购物车
+            //F2商品加入购物车
              addCart1(e){
                  var value=parseInt(e.target.dataset.value);
                  var pid=this. F2_lists[value].pid;
@@ -216,6 +227,18 @@ export default {
                     this.F1_lists[value].count=99
                 }  
             }
+    },
+    watch:{
+          "$route":{
+              handler(to){
+                    var path=to.path;
+                    if(path==""||path=="/"){
+                        var scrollY=this.$store.state.index.scrollY;
+                        window.scroll(0,scrollY);
+                    }      
+              },
+              immediate:true,
+          }
     },
 }
 </script>

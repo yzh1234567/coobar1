@@ -123,7 +123,7 @@
                 <div>
                    <img src="http://localhost:3000/img/index-header/shop_car1.png" alt=""/>
                     <router-link to="/cart">我的购物车</router-link>
-                    <input type="text" v-model="value" />
+                    <input type="text" :value="this.$store.state.cart.count" />
                 </div>
             </div>   
         </div>
@@ -150,7 +150,6 @@ import { mapState }  from  "vuex";
                       ,'海南','四川','贵州','云南','陕西','甘肃','青海','台湾'
                      ,'内蒙古','广西','西藏','宁夏','新疆','香港','澳门'],
                 userMsg:"您好,请登录",
-                value:0,
                 info:[{msg:"通知:请先注册、登陆，加入购物车后，再购买；支付功能正在完善中，请谨慎支付..."}]
            }
        },
@@ -187,15 +186,9 @@ import { mapState }  from  "vuex";
                                   if(res.data.code==1){
                                        var num=res.data.msg.length;
                                        this.$store.commit("modifyCount",num);
-                                       this.value=this.$store.state.cart.count;
-                                  }else if(res.data.code==-1){
-                                        this.value=0;
                                   }
                             })
-                      }else{
-                           this.value=this.$store.state.cart.count;
-                      }
-                    
+                      }  
             //  this.axios.get("http://localhost:3000/queryCart").then((res)=>{
             //         if(res.data.code==-1){
             //              this.value=0;

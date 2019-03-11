@@ -30,6 +30,9 @@ const   cartModule={
          mutations:{
              modifyCount:(state,newCount)=>{
                    state.count=newCount;
+             },
+             addCount:(state)=>{
+                  state.count++;
              }
          },
          actions:{
@@ -41,9 +44,20 @@ const   cartModule={
 
          },
 };
+const index={
+    state:{
+        scrollY:0,
+    },
+    mutations:{
+         modifyScrollY:(state,arg)=>{
+               state.scrollY=arg;
+         }
+    },
+};
 export default new Vuex.Store({
     modules:{
         user:userModule,
         cart:cartModule,
+        index:index,
     }
 })
